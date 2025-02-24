@@ -13,40 +13,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  role    Role     @default(USER)
-  posts   Post[]
-  profile Profile?
-}
-
-model Profile {
-  id     Int    @id @default(autoincrement())
-  bio    String
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int    @unique
-}
-
-model Post {
-  id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  title      String
-  published  Boolean    @default(false)
-  author     User       @relation(fields: [authorId], references: [id])
-  authorId   Int
-  categories Category[]
-}
-
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
-  posts Post[]
-}
-
 enum Role {
   USER
   ADMIN
+}
+
+enum HOUSE_STATUS {
+  PENDING
+  ACCEPT
+  REJECT
+}
+
+model House {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  imgs        String[]
+  address     String
+  district    Int
+  province    Int
+  square      Int
+  money       Int
+  contact     String
+  type        String
+  like        Int
+  status      HOUSE_STATUS @default(PENDING)
+  active      Boolean      @default(false)
+  userId      Int
+  categoryId  Int
+  user        User         @relation(fields: [userId], references: [id])
+  category    Category     @relation(fields: [categoryId], references: [id])
+}
+
+model Favourite {
+  id      Int     @id @default(autoincrement())
+  name    String
+  userId  Int
+  houseId Int
+  active  Boolean @default(false)
+  User    User    @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id         Int         @id @default(autoincrement())
+  email      String      @unique
+  username   String
+  avatar     String
+  password   String
+  phone      String
+  active     Boolean     @default(false)
+  role       Role        @default(USER)
+  houses     House[]
+  favourites Favourite[]
+}
+
+model Category {
+  id     Int     @id @default(autoincrement())
+  name   String
+  active Boolean @default(false)
+  houses House[]
 }
