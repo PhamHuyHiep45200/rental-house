@@ -30,7 +30,7 @@ export async function GET(req) {
       prisma.house.count({ where: { province: 1 } }),
       prisma.house.count({ where: { province: 48 } }),
       prisma.house.count({ where: { province: 79 } }),
-      CategoryModel.count(),
+      prisma.category.count(),
     ]);
 
     return NextResponse.json({
