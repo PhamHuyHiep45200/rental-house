@@ -1,23 +1,24 @@
-import { getDataCommon, skip } from "@/config/api";
+import { skip } from "@/config/api";
 import { DEFAULT_PAGING } from "@/contants/api";
 import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const page = searchParams.get("page");
-    const category = await prisma.category.findMany({
+    const userId = searchParams.get("userId");
+    const favourite = await prisma.favourite.findMany({
       where: {
+        userId,
         active: true,
       },
       skip: skip(page),
       take: DEFAULT_PAGING.page_size,
     });
-    const total = await prisma.category.count();
+    const total = await prisma.favourite.count();
 
     return NextResponse.json(
-      getDataCommon(category, { total, skip: skip(page) })
+      getDataCommon(favourite, { total, skip: skip(page) })
     );
   } catch (error) {
     console.log(error);
@@ -32,21 +33,22 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const body = await req.json();
-    const categoryFind = await prisma.category.findFirst({
+    const favouriteFind = await prisma.favourite.findFirst({
       where: {
-        name: body?.name,
+        userId: body?.userId,
+        houseId: body?.houseId,
       },
     });
-    if (categoryFind) {
+    if (favouriteFind) {
       return NextResponse.json(
-        { error: "Danh mục đã tồn tại!" },
+        { error: "Bài viết đã được yêu thích!" },
         { status: 400 }
       );
     }
-    const category = await prisma.category.create({
+    const favorite = await prisma.favourite.create({
       data: body,
     });
-    return NextResponse.json(category);
+    return NextResponse.json(favorite);
   } catch (error) {
     return NextResponse.json(
       { error: "Đã có lỗi từ Hệ Thống!" },
@@ -58,12 +60,10 @@ export async function POST(req) {
 export async function DELETE(req) {
   const body = await req.json();
   try {
-    const dataDelete = await prisma.category.update({
+    const dataDelete = await prisma.favourite.delete({
       where: {
-        id: body.categoryId,
-      },
-      data: {
-        active: true,
+        id: body.favouriteId,
+        userId: body.userId,
       },
     });
     return NextResponse.json(dataDelete);
