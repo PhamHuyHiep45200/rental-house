@@ -12,6 +12,7 @@
     "@ant-design/cssinjs": "^1.23.0",
     "@ant-design/icons": "^5.1.4",
     "@ant-design/nextjs-registry": "^1.0.2",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",

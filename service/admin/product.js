@@ -1,15 +1,15 @@
-import request from ".";
+import request from "../index";
 
 export async function getAllProduct(params) {
-  return request(`/house/status`, {
+  return request(`/house`, {
     method: "GET",
-    params
+    params,
   });
 }
 export async function updateStatusProduct(data) {
-  return request(`/house/status`, {
+  return request(`/house`, {
     method: "PUT",
-    data
+    data,
   });
 }
 export async function getProductById(id) {
@@ -19,19 +19,19 @@ export async function getProductById(id) {
 }
 
 export async function createProduct(data) {
-  return request(`/house/create`, {
+  return request(`/house`, {
     method: "POST",
     data,
   });
 }
 export async function updateProduct(id, data) {
-  return request(`/house/update/${id}`, {
+  return request(`/house/${id}`, {
     method: "POST",
     data,
   });
 }
 export async function updateMultiProduct(data) {
-  return request(`/house/status`, {
+  return request(`/house`, {
     method: "PUT",
     data,
   });

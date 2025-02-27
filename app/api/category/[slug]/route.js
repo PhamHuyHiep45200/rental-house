@@ -7,7 +7,7 @@ export async function PATCH(req, { params }) {
   try {
     const dataUpdate = await prisma.category.update({
       where: {
-        id: slug,
+        id: Number(slug),
       },
       data,
     });

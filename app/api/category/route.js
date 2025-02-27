@@ -7,9 +7,11 @@ export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
     const page = searchParams.get("page");
+    const active = searchParams.get("active");
+    const activeObject = active ? { active } : {};
     const category = await prisma.category.findMany({
       where: {
-        active: true,
+        ...activeObject,
       },
       skip: skip(page),
       take: DEFAULT_PAGING.page_size,
@@ -63,7 +65,7 @@ export async function DELETE(req) {
         id: body.categoryId,
       },
       data: {
-        active: true,
+        active: body.active,
       },
     });
     return NextResponse.json(dataDelete);

@@ -1,4 +1,4 @@
-import request from ".";
+import request from "../index";
 
 export async function getAllCategory(params) {
   return request(`/category`, {
@@ -24,8 +24,8 @@ export async function updateCategory(id, data) {
   });
 }
 export async function deleteCategory(id, active) {
-  return request(`/category/${id}`, {
+  return request(`/category`, {
     method: "DELETE",
-    data: { active },
+    data: { categoryId: id, active },
   });
 }

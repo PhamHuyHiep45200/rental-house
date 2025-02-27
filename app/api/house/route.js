@@ -16,39 +16,55 @@ export async function GET(req) {
       return NextResponse.json(houseDetail);
     }
     const page = searchParams.get("page");
-    const search = searchParams.get("search") || "";
-    const province = searchParams.get("province") || "";
-    const district = searchParams.get("district") || "";
-    const square_to = searchParams.get("square_to") || "";
-    const square_from = searchParams.get("square_from") || "";
-    const money_from = searchParams.get("money_from") || "";
-    const money_to = searchParams.get("money_to") || "";
-    const category = searchParams.get("category") || "";
+    const status = searchParams.get("status");
+    const search = searchParams.get("search");
+    const province = searchParams.get("province");
+    const district = searchParams.get("district");
+    const square_to = searchParams.get("square_to");
+    const square_from = searchParams.get("square_from");
+    const money_from = searchParams.get("money_from");
+    const money_to = searchParams.get("money_to");
+    const category = searchParams.get("category");
+    const active = searchParams.get("active");
+    const province_condition = province ? { province } : {};
+    const district_condition = district ? { district } : {};
+    const category_condition = category ? { category } : {};
+    const money_condition = category
+      ? {
+          money: {
+            gte: square_from ? parseFloat(money_from) : undefined,
+            lte: square_to ? parseFloat(money_to) : undefined,
+          },
+        }
+      : {};
+    const square_condition = category
+      ? {
+          square: {
+            gte: square_from ? parseFloat(square_from) : undefined,
+            lte: square_to ? parseFloat(square_to) : undefined,
+          },
+        }
+      : {};
+
     const sortCondition = {
       where: {
-        status: "ACTIVE",
-        active: true,
-        province,
-        district,
-        category,
-        money: {
-          gte: square_from ? parseFloat(money_from) : undefined,
-          lte: square_to ? parseFloat(money_to) : undefined,
-        },
-        square: {
-          gte: square_from ? parseFloat(square_from) : undefined,
-          lte: square_to ? parseFloat(square_to) : undefined,
-        },
+        status: status || "ACTIVE",
+        active: active || true,
+        ...province_condition,
+        ...district_condition,
+        ...category_condition,
+        ...money_condition,
+        ...square_condition,
         OR: [
           {
             address: {
-              contains: search,
+              contains: search || "",
               mode: "insensitive",
             },
           },
           {
             title: {
-              contains: search,
+              contains: search || "",
               mode: "insensitive",
             },
           },

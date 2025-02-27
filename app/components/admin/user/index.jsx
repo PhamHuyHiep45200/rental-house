@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteUser, getAllUser } from "@/service/user";
+import { deleteUser, getAllUser } from "@/service/admin/user";
 import AddUser from "./addUser";
 import { HighlightOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Pagination, Table, Tag } from "antd";

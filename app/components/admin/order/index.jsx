@@ -10,7 +10,7 @@ import {
   StatusOrder,
   StatusTextOrder,
 } from "@/enum/order.enum";
-import { formatMoney } from "@/utils/common";
+import { formatMoney } from "@/utils/common.util";
 
 function Order() {
   const [loading, setLoading] = useState(false);
@@ -78,9 +78,11 @@ function Order() {
             >
               Xem Chi Tiết
             </Button>
-            {e.status === STATUS_ORDERED && <Button danger onClick={() => handleCancle(e.id)}>
-              Huỷ
-            </Button>}
+            {e.status === STATUS_ORDERED && (
+              <Button danger onClick={() => handleCancle(e.id)}>
+                Huỷ
+              </Button>
+            )}
           </div>
         ),
       },

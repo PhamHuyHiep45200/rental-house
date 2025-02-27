@@ -96,7 +96,7 @@ export default function Home() {
 
   const getStatistics = async () => {
     try {
-      const { data } = await statistic();
+      const data = await statistic();
       setUser(data?.userCount);
       setCategory(data?.categoryCount);
       const dataFormat = [

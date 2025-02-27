@@ -1,6 +1,7 @@
-import { skip } from "@/config/api";
+import { getDataCommon, skip } from "@/config/api";
 import { DEFAULT_PAGING } from "@/contants/api";
 import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
@@ -24,7 +25,9 @@ export async function GET(req) {
       skip: skip(page),
       take: DEFAULT_PAGING.page_size,
     });
-    const total = await prisma.category.count();
+    const total = await prisma.user.count({
+      where: { role: "USER", active: false },
+    });
 
     return NextResponse.json(getDataCommon(users, { total, skip: skip(page) }));
   } catch (error) {

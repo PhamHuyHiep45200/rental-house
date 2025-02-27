@@ -17,20 +17,20 @@ export async function GET(req) {
       houseHCM,
       categoryCount,
     ] = await Promise.all([
-      prisma.house.count(),
+      await prisma.house.count(),
       prisma.house.count({
         where: { type: "RENT" },
       }),
-      prisma.house.count({ where: { type: "PAIR" } }),
-      prisma.house.count({ where: { status: "PENDING" } }),
-      prisma.house.count({ where: { status: "ACCEPT" } }),
-      prisma.house.count({ where: { status: "REJECT" } }),
-      prisma.house.count({ where: { active: true } }),
-      prisma.house.count({ where: { active: false } }),
-      prisma.house.count({ where: { province: 1 } }),
-      prisma.house.count({ where: { province: 48 } }),
-      prisma.house.count({ where: { province: 79 } }),
-      prisma.category.count(),
+      await prisma.house.count({ where: { type: "PAIR" } }),
+      await prisma.house.count({ where: { status: "PENDING" } }),
+      await prisma.house.count({ where: { status: "ACCEPT" } }),
+      await prisma.house.count({ where: { status: "REJECT" } }),
+      await prisma.house.count({ where: { active: true } }),
+      await prisma.house.count({ where: { active: false } }),
+      await prisma.house.count({ where: { province: 1 } }),
+      await prisma.house.count({ where: { province: 48 } }),
+      await prisma.house.count({ where: { province: 79 } }),
+      await prisma.category.count(),
     ]);
 
     return NextResponse.json({

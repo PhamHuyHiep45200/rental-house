@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { getAllProduct, updateMultiProduct } from "@/service/product";
-import { formatMoney } from "@/utils/common";
-import { Button, Image, Pagination, Table } from "antd";
-import { useRouter } from "next/router";
-import { PRODUCT_STATUS } from "@/enum/product.enum";
+import { getAllProduct } from "@/service/admin/product";
+import { formatMoney } from "@/utils/common.util";
+import { Image, Pagination, Table } from "antd";
 
 function ProductCancle({ checkCall }) {
   const [loading, setLoading] = useState(false);
@@ -20,9 +18,9 @@ function ProductCancle({ checkCall }) {
         status: "REJECT",
         page: pagination.page,
       });
-      const product = data?.data?.map((e) => ({
+      const product = data?.map((e) => ({
         ...e,
-        key: e?._id,
+        key: e?.id,
       }));
       setPagination({
         ...pagination,

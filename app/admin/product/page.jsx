@@ -1,3 +1,4 @@
+"use client";
 import ProductApproved from "@/app/components/admin/post/ProductApproved";
 import ProductCancle from "@/app/components/admin/post/ProductCancle";
 import ProductPending from "@/app/components/admin/post/ProductPending";

@@ -1,4 +1,4 @@
-import { createUser } from "@/service/user";
+import { createUser } from "@/service/admin/user";
 import { Button, Form, Input, Modal, Select } from "antd";
 import React, { useState } from "react";
 const { TextArea } = Input;

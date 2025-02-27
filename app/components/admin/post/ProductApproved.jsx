@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { getAllProduct, updateMultiProduct } from "@/service/admin/product";
-import { formatMoney } from "@/utils/common";
+import { formatMoney } from "@/utils/common.util";
 import { Button, Image, Pagination, Table } from "antd";
 import { PRODUCT_STATUS } from "@/contants/product";
 
@@ -38,9 +38,9 @@ function ProductApproved({ checkCall, resetData }) {
         page: pagination.page,
       });
       setData(
-        data.data.map((e) => ({
+        data?.map((e) => ({
           ...e,
-          key: e._id,
+          key: e.id,
         }))
       );
       setPagination({
