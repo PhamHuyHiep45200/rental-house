@@ -1,3 +1,4 @@
+"use client";
 import Category from "@/app/components/admin/category";
 import React from "react";
 

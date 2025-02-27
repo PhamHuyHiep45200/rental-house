@@ -1,4 +1,4 @@
-import request from ".";
+import request from "../index";
 
 export async function getAllOrder() {
   return request(`/order`, {

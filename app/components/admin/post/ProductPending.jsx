@@ -1,13 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  getAllProduct,
-  updateMultiProduct,
-  updateStatusProduct,
-} from "@/service/product";
-import { formatMoney } from "@/utils/common";
+import { getAllProduct, updateStatusProduct } from "@/service/admin/product";
+import { formatMoney } from "@/utils/common.util";
 import { Button, Image, Pagination, Table } from "antd";
-import { useRouter } from "next/router";
-import { PRODUCT_STATUS } from "@/enum/product.enum";
+import { PRODUCT_STATUS } from "@/contants/product";
 
 function ProductPending({ checkCall, resetData }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -48,9 +43,9 @@ function ProductPending({ checkCall, resetData }) {
         page: pagination.page,
       });
       const product = [
-        ...data.data.map((e) => ({
+        ...data?.map((e) => ({
           ...e,
-          key: e._id,
+          key: e.id,
         })),
       ];
       setPagination({
@@ -119,9 +114,8 @@ function ProductPending({ checkCall, resetData }) {
           Duyệt
         </Button>
         <Button
-          dange
+          dange="true"
           onClick={() => changeStatusProducts(PRODUCT_STATUS.UN_APPROVE)}
-          r
         >
           Huỷ Bài
         </Button>

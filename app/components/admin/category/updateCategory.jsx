@@ -1,14 +1,12 @@
-import { updateCategory } from "@/service/category";
-import { updateUser } from "@/service/user";
+import { updateCategory } from "@/service/admin/category";
 import { Button, Form, Input, Modal, Select } from "antd";
 import React, { useEffect } from "react";
-import UploadFile from "../common/UploadFile";
 
 function UpdateUser({ open, refresh, closeAdd, data }) {
   const [form] = Form.useForm();
   const submit = async (e) => {
     try {
-      await updateCategory(data._id, e);
+      await updateCategory(data.id, e);
       refresh();
       onCloseAdd();
     } catch (error) {

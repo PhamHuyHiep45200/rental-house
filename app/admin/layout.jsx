@@ -1,13 +1,8 @@
 "use client";
-import {
-  AreaChartOutlined,
-  BellOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
-import { Avatar, Badge, Layout, Menu, Popover } from "antd";
-import moment from "moment";
+import { AreaChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { Layout, Menu } from "antd";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
+import React from "react";
 
 const { Sider, Content } = Layout;
 function LayoutMain({ children }) {
@@ -21,41 +16,31 @@ function LayoutMain({ children }) {
   };
   const itemsLayout = [
     {
-      key: "/",
+      key: "/admin",
       icon: <AreaChartOutlined />,
       label: "Trang chủ",
     },
     {
-      key: "/user",
+      key: "/admin/user",
       icon: <UsergroupAddOutlined />,
       label: "Người dùng",
     },
     {
-      key: "/category",
+      key: "/admin/category",
       icon: <UsergroupAddOutlined />,
       label: "Thể Loại",
     },
     {
-      key: "/product",
+      key: "/admin/product",
       icon: <UsergroupAddOutlined />,
       label: "Quản Lý Bài Đăng",
     },
     {
-      key: "/login",
+      key: "/admin/login",
       icon: <UsergroupAddOutlined />,
       label: "Đăng Xuất",
     },
-    // {
-    //   key: "/banner",
-    //   icon: <UsergroupAddOutlined />,
-    //   label: "Banner",
-    // },
   ];
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.push("/login");
-  //   }
-  // }, [user]);
   return (
     <Layout style={{ height: "100vh" }}>
       <Sider

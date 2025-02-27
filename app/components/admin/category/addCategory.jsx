@@ -1,7 +1,7 @@
-import { createCategory } from "@/service/category";
+import { createCategory } from "@/service/admin/category";
 import { Button, Form, Input, Modal } from "antd";
 import React from "react";
-import UploadFile from "../common/UploadFile";
+import "@ant-design/v5-patch-for-react-19";
 
 function AddUser({ open, refresh, closeAdd }) {
   const [form] = Form.useForm();
@@ -30,7 +30,12 @@ function AddUser({ open, refresh, closeAdd }) {
           <Input size="large" />
         </Form.Item>
         <div>
-          <Button htmlType="submit" className="w-full" size="large">
+          <Button
+            htmlType="submit"
+            type="primary"
+            className="w-full"
+            size="large"
+          >
             Tạo
           </Button>
         </div>

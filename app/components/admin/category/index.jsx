@@ -1,9 +1,5 @@
-import {
-  HighlightOutlined,
-  LockOutlined,
-  UnlockOutlined,
-} from "@ant-design/icons";
-import { Button, Pagination, Table } from "antd";
+import { HighlightOutlined } from "@ant-design/icons";
+import { Button, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import AddUser from "./addCategory";
 import UpdateUser from "./updateCategory";
@@ -40,14 +36,14 @@ function Category() {
           {!e.active ? (
             <div
               className="px-[10px] py-[5px] rounded-xl bg-[#ffae00] border-[#ffae00] border-[1px] bg-opacity-25 space-x-[5px] text-[white] flex items-center cursor-pointer font-medium"
-              onClick={() => handleDelete(e._id, true)}
+              onClick={() => handleDelete(e.id, true)}
             >
               <span className="text-[#ffae00]">Công Khai</span>
             </div>
           ) : (
             <div
               className="px-[10px] py-[5px] rounded-xl bg-[red] border-[red] border-[1px] bg-opacity-25 space-x-[5px] text-[white] flex items-center cursor-pointer font-medium"
-              onClick={() => handleDelete(e._id, false)}
+              onClick={() => handleDelete(e.id, false)}
             >
               <span className="text-[red]">Khóa</span>
             </div>
@@ -63,7 +59,7 @@ function Category() {
     setLoading(true);
     try {
       const { data } = await getAllCategory();
-      setData(data.data);
+      setData(data.map((e) => ({ ...e, key: e.id })));
     } catch (error) {
       console.log(error);
     } finally {

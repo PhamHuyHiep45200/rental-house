@@ -1,4 +1,4 @@
-import { updateUser } from "@/service/user";
+import { updateUser } from "@/service/admin/user";
 import { Button, Form, Input, Modal, Select } from "antd";
 // import TextArea from "antd/es/input/TextArea";
 import React, { useEffect } from "react";
