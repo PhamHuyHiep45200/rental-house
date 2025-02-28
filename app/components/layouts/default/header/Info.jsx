@@ -1,11 +1,9 @@
 import { InfoList } from "@/config/header.config";
-import { IAuthSlide } from "@/model/auth.model";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { userQuery } from "@/store/service/user.service";
 import { setUser } from "@/store/slide/auth.slide";
 import { Avatar, List, ListItem, Popover } from "@mui/material";
 import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function Info() {
@@ -17,7 +15,6 @@ function Info() {
     if (path === "logout") {
       router.push("/login");
       dispatch(setUser(null));
-      dispatch(userQuery.util.resetApiState());
     } else {
       router.push(path);
     }

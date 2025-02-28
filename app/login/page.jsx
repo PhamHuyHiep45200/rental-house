@@ -1,4 +1,4 @@
-import LayoutLogin from "@/components/layouts/auth";
+"use client";
 import { FORMAT_DEFAULT_DATE } from "@/config/date.config";
 import { useAppDispatch } from "@/store/hooks";
 import { useLoginUserMutation } from "@/store/service/user.service";
@@ -17,7 +17,7 @@ import {
 import { Field, Formik } from "formik";
 import moment from "moment";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import React, { useEffect } from "react";
 

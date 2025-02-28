@@ -1,14 +1,11 @@
-import CardHome from "@/components/base/CardHome";
-import HeaderProduct from "@/components/base/HeaderProduct";
-import { useRandomHouseQuery } from "@/store/service/user.service";
 import { Grid } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import React, { useMemo } from "react";
+import HeaderProduct from "../../base/HeaderProduct";
+import CardHome from "../../base/CardHome";
 
 function RandomHouse() {
-  const { data, isSuccess } = useRandomHouseQuery({
-    type: "RENT",
-  });
+  const { data, isSuccess } = { data: { data: [] }, isSuccess: true };
 
   const randomHouse = useMemo(() => {
     if (isSuccess) {

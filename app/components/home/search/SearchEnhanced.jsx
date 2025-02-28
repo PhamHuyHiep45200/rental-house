@@ -1,4 +1,3 @@
-import { IPropsSearchEnhanced } from "@/model/search.model";
 import { formatMoney } from "@/utils/common.util";
 import {
   Button,
@@ -16,10 +15,8 @@ import hcmDistrict from "@/data/district/hcm.json";
 import React, { useMemo } from "react";
 import { Field } from "formik";
 import { useAppSelector } from "@/store/hooks";
-import { IAuthSlide } from "@/model/auth.model";
 import Image from "next/image";
 import province from "@/data/province.json";
-import { useGetCategoryQuery } from "@/store/service/user.service";
 
 function SearchEnhanced(props) {
   const { open, setOpen, formValue } = props;
@@ -27,7 +24,7 @@ function SearchEnhanced(props) {
     (state) => state.authSlice
   );
 
-  const { data, isSuccess } = useGetCategoryQuery({});
+  const { data, isSuccess } = { data: { data: { data: [] } }, isSuccess: true };
 
   const handleClose = () => {
     setOpen(false);

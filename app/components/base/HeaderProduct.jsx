@@ -1,4 +1,3 @@
-import { IHeaderprops } from "@/model/base.model";
 import React from "react";
 
 function HeaderProduct(props) {

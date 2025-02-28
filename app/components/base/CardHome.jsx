@@ -4,7 +4,7 @@ import React from "react";
 import MaskImage from "./MaskImage";
 import { formatMoney, getDistrict, getProvince } from "@/utils/common.util";
 import moment from "moment";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function CardHome(props) {
   const { house, favorite } = props;

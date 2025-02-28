@@ -1,14 +1,17 @@
-import { useNewHouseQuery } from "@/store/service/user.service";
 import { formatMoney, getDistrict } from "@/utils/common.util";
 import { Grid } from "@mui/material";
 import moment from "moment";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useMemo } from "react";
 
 function NewHouse() {
-  const router = useRouter()
-  const { data, isFetching, isSuccess } = useNewHouseQuery({});
+  const router = useRouter();
+  const { data, isFetching, isSuccess } = {
+    data: { data: { data: [] } },
+    isFetching: true,
+    isSuccess: true,
+  };
 
   const newHouse = useMemo(() => {
     if (isSuccess) {
@@ -29,7 +32,7 @@ function NewHouse() {
             spacing={[1]}
             key={e._id}
             className="mb-5 cursor-pointer bg-white py-2 px-2 rounded-lg"
-            onClick={()=>detailHouse(e._id)}
+            onClick={() => detailHouse(e._id)}
           >
             <Grid xs={4}>
               <Image

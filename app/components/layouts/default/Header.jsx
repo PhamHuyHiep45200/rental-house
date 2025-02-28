@@ -2,23 +2,18 @@ import { Badge, Button, Container } from "@mui/material";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import Image from "next/image";
 import React from "react";
-import { useRouter } from "next/router";
-import PopUpChat from "./header/PopUpChat";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 import Info from "./header/Info";
-import { userQuery } from "@/store/service/user.service";
+import { useRouter } from "next/navigation";
 
 function Header() {
-  const { popupChat } = useAppSelector((state) => state.commonSlice);
   const { favorite, user } = useAppSelector((state) => state.authSlice);
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const redirect = (path) => {
     router.push(path);
   };
   return (
     <div className="fixed top-0 left-0 right-0 h-20 flex items-center z-10 bg-[#ffba00] bg-opacity-[0.9]">
-      {popupChat && <PopUpChat />}
       <Container className="!flex justify-between items-center">
         <div className="flex items-center justify-center space-x-3">
           <Image
@@ -41,7 +36,6 @@ function Header() {
               color="error"
               className="cursor-pointer"
               onClick={() => {
-                dispatch(userQuery.util.resetApiState());
                 redirect("/favorite");
               }}
             >

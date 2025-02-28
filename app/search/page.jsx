@@ -1,10 +1,11 @@
+"use client";
 import CardHome from "@/components/base/CardHome";
 import Search from "@/components/home/Search";
 import {
   useSearchQuery,
 } from "@/store/service/user.service";
 import { Container, Divider, Grid, Pagination } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 
 function SearchData() {

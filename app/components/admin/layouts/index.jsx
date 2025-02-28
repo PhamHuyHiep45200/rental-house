@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Avatar, Badge, Layout, Menu, Popover } from "antd";
 import moment from "moment";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 
 const { Sider, Content } = Layout;
