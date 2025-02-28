@@ -1,5 +1,4 @@
-/* eslint-disable max-lines */
-/* eslint-disable no-mixed-operators */
+"use client";
 import MaskImage from "@/components/base/MaskImage";
 import {
   useDeleteHouseMutation,
@@ -26,11 +25,11 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RunningWithErrorsIcon from "@mui/icons-material/RunningWithErrors";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import React, { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
 import BrushIcon from "@mui/icons-material/Brush";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { HOUSE_STATUS } from "@/config/house.config";
 import DialogConfirm from "@/components/base/DialogConfirm";
+import { useRouter } from "next/navigation";
 
 function House() {
   const { enqueueSnackbar } = useSnackbar();

@@ -1,11 +1,10 @@
+"use client";
 import InfoProduct from "@/components/detail/InfoProduct";
 import InfoUser from "@/components/detail/InfoUser";
-import {
-  useDetailHouseQuery,
-} from "@/store/service/user.service";
+import { useDetailHouseQuery } from "@/store/service/user.service";
 import { Container } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useMemo } from "react";
 
 function DetailPost() {

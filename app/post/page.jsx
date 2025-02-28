@@ -1,3 +1,4 @@
+"use client";
 import { validationSchema } from "@/validation/post.validation";
 import { Container, Divider } from "@mui/material";
 import { Formik } from "formik";
@@ -8,9 +9,9 @@ import {
   usePostHouseMutation,
 } from "@/store/service/user.service";
 import { useSnackbar } from "notistack";
-import { useRouter } from "next/router";
 import { useAppDispatch } from "@/store/hooks";
 import { startLoading, stopLoading } from "@/store/slide/common.slide";
+import { useRouter } from "next/navigation";
 
 const initialValues = {
   category: "",

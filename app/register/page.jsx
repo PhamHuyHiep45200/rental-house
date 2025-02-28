@@ -1,8 +1,4 @@
-import UploadSignImage from "@/components/base/UploadSignImage";
-import LayoutLogin from "@/components/layouts/auth";
-import { useAppDispatch } from "@/store/hooks";
-import { useRegisterUserMutation } from "@/store/service/user.service";
-import { startLoading, stopLoading } from "@/store/slide/common.slide";
+"use client";
 import { validationSchema } from "@/validation/register.validation";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
@@ -16,7 +12,7 @@ import {
 } from "@mui/material";
 import { Field, Formik } from "formik";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import React, { useEffect } from "react";
 
@@ -27,13 +23,14 @@ const initialValues = {
   avatar: "",
 };
 function Register() {
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const [registerUser, { isLoading, isSuccess, isError }] =
-    useRegisterUserMutation();
+  const [registerUser, { isLoading, isSuccess, isError }] = [
+    () => {},
+    { isLoading: false, isSuccess: false, isError: false },
+  ];
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -54,14 +51,6 @@ function Register() {
       });
     }
   }, [isSuccess, isError]);
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(startLoading());
-    } else {
-      dispatch(stopLoading());
-    }
-  }, [isLoading]);
 
   return (
     <div className="min-w-[400px]">
@@ -129,13 +118,13 @@ function Register() {
                   </FormControl>
                 </div>
                 <FormControl fullWidth>
-                  <Field
+                  {/* <Field
                     as={UploadSignImage}
                     name="avatar"
                     onChange={(value) => {
                       props.setFieldValue("avatar", value);
                     }}
-                  />
+                  /> */}
                   <FormHelperText error sx={{ height: 30 }}>
                     {props.touched.avatar && props.errors.avatar}
                   </FormHelperText>

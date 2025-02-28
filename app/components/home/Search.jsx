@@ -1,8 +1,8 @@
 import { Button, Input } from "@mui/material";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import SearchEnhanced from "./search/SearchEnhanced";
 import { Field, Formik } from "formik";
+import { useRouter } from "next/navigation";
 
 function Search() {
   const router = useRouter();

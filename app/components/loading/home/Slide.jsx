@@ -1,6 +1,6 @@
-import BaseLoadingSkeleton from "@/components/base/BaseLoadingSkeleton";
 import { Grid } from "@mui/material";
 import React from "react";
+import BaseLoadingSkeleton from "../../base/BaseLoadingSkeleton";
 
 function SlideHome({ span, listNum }) {
   return (

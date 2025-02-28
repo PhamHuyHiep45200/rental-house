@@ -1,5 +1,4 @@
-import UploadSignImage from "@/components/base/UploadSignImage";
-import { IAuthSlide, IUSer } from "@/model/auth.model";
+"use client";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useUpdateMeMutation } from "@/store/service/user.service";
 import { setCheckChangeUser } from "@/store/slide/auth.slide";
@@ -71,13 +70,13 @@ function InfoMe() {
           {(props) => (
             <form onSubmit={props.handleSubmit}>
               <FormControl fullWidth>
-                <Field
+                {/* <Field
                   as={UploadSignImage}
                   name="avatar"
                   onChange={(value) => {
                     props.setFieldValue("avatar", value);
                   }}
-                />
+                /> */}
                 <FormHelperText error sx={{ height: 30 }}>
                   {props.touched.avatar && props.errors.avatar}
                 </FormHelperText>

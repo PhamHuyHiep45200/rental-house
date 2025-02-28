@@ -1,14 +1,11 @@
 import React, { useMemo } from "react";
-import CardHome from "@/components/base/CardHome";
-import { useRandomHouseQuery } from "@/store/service/user.service";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
-import SlideHome from "@/components/loading/home/Slide";
+import CardHome from "../../base/CardHome";
+import SlideHome from "../../loading/home/Slide";
 
 function RandomPair() {
-  const { data, isSuccess, isFetching } = useRandomHouseQuery({
-    type: "PAIR",
-  });
+  const { data, isSuccess, isFetching } = { data: [], isSuccess: false, isFetching: false };
   const randomHouse = useMemo(() => {
     if (isSuccess) {
       return data.data;

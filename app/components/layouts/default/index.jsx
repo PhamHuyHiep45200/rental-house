@@ -3,10 +3,6 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useEffect } from "react";
 import {
-  useGetMeQuery,
-  useUserFavoriteQuery,
-} from "@/store/service/user.service";
-import {
   setUser,
   setInfo,
   setFavorite,
@@ -21,22 +17,12 @@ export default function LayoutDefault({ children }) {
   );
   const dispatch = useAppDispatch();
 
-  const { data, isFetching, isSuccess, refetch } = useGetMeQuery(
-    {},
-    {
-      skip: !auth,
-    }
-  );
+  const { data, isFetching, isSuccess, refetch } = {};
   const {
     data: dataFavorite,
     isSuccess: successFavorite,
     refetch: refreshFavorite,
-  } = useUserFavoriteQuery(
-    {},
-    {
-      skip: !user,
-    }
-  );
+  } = {}
 
   useEffect(() => {
     if (isSuccess) {
