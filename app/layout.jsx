@@ -14,8 +14,8 @@ export default function RootLayout({ children }) {
     storeRef.current = makeStore();
   }
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <Provider store={storeRef.current}>
           <ConfigAntd>
             <LayoutDefault>{children}</LayoutDefault>

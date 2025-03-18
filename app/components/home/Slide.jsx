@@ -1,20 +1,28 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import CardHome from "../base/CardHome";
 import SlideHome from "../loading/home/Slide";
+import { topFavorite } from "@/service/frontend";
 
 export default function Slide() {
-  // const { data, isFetching } = useFavoriteQuery({});
-  const data = []
-  const isFetching = false
+  const [favorite, setFavorite] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
-  const favorite = useMemo(() => {
-    if (!isFetching && data) {
-      return data?.data?.data || [];
+  const getTopFavorite = async () => {
+    setIsFetching(true);
+    try {
+      const res = await topFavorite();
+      setFavorite(res);
+    } catch (error) {
+    } finally {
+      setIsFetching(false);
     }
-    return [];
-  }, [isFetching]);
+  };
+
+  useEffect(() => {
+    getTopFavorite();
+  }, []);
 
   return (
     <div className="px-5 py-10">

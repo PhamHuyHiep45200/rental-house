@@ -1,11 +1,14 @@
 import { Button, Input } from "@mui/material";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import SearchEnhanced from "./search/SearchEnhanced";
 import { Field, Formik } from "formik";
 import { useRouter } from "next/navigation";
 
 function Search() {
   const router = useRouter();
+  const query = router.query;
+  console.log(query);
+
   const [open, setOpen] = useState(false);
 
   const searchData = (values) => {
@@ -30,10 +33,11 @@ function Search() {
       ...moneyQuery,
       ...squareQuery,
     };
-    router.push({
-      pathname: "/search",
-      query,
-    });
+
+    const searchParams = new URLSearchParams(query);
+
+    // Đẩy lên URL
+    router.replace(`/search?${searchParams.toString()}`);
   };
   const handleOpen = () => {
     setOpen(true);
@@ -41,7 +45,12 @@ function Search() {
 
   return (
     <Formik
-      initialValues={{}}
+      initialValues={{
+        district: "",
+        category: "",
+        province: "",
+        type: "",
+      }}
       enableReinitialize
       onSubmit={(values) => {
         searchData(values);

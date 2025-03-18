@@ -21,9 +21,11 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-
+    delete userFind.password;
     return NextResponse.json(userFind);
   } catch (error) {
+    console.log(error);
+
     return NextResponse.json(
       { error: "Đã có lỗi từ Hệ Thống!" },
       { status: 500 }

@@ -1,3 +1,4 @@
+"use client";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -9,9 +10,9 @@ import {
   setAuth,
 } from "@/store/slide/auth.slide";
 import { Divider } from "@mui/material";
+import { SnackbarProvider } from "notistack";
 
 export default function LayoutDefault({ children }) {
-
   const { checkChangeUser, changeFavorite, user, auth } = useAppSelector(
     (state) => state.authSlice
   );
@@ -22,7 +23,7 @@ export default function LayoutDefault({ children }) {
     data: dataFavorite,
     isSuccess: successFavorite,
     refetch: refreshFavorite,
-  } = {}
+  } = {};
 
   useEffect(() => {
     if (isSuccess) {
@@ -70,7 +71,11 @@ export default function LayoutDefault({ children }) {
         <Header />
       </header>
       <main className="mt-20 bg-[whitesmoke] min-h-[100vh] pb-10 pt-10">
-        {children}
+        <SnackbarProvider
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          {children}
+        </SnackbarProvider>
       </main>
       <Divider />
       <Footer />

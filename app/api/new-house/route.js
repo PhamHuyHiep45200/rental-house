@@ -3,15 +3,14 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    const favourite = await prisma.favourite.findMany({
-      include: {
-        User: true,
-      },
-      skip: 0,
+    const results = await prisma.house.findMany({
       take: 10,
+      // orderBy: {
+      //   createdAt: "desc",
+      // },
     });
 
-    return NextResponse.json(favourite);
+    return NextResponse.json(results);
   } catch (error) {
     console.log(error);
 

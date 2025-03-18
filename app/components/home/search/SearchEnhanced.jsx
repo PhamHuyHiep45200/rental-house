@@ -20,22 +20,12 @@ import province from "@/data/province.json";
 
 function SearchEnhanced(props) {
   const { open, setOpen, formValue } = props;
-  const { infoAccout } = useAppSelector(
-    (state) => state.authSlice
-  );
+  const { infoAccout } = useAppSelector((state) => state.authSlice);
 
   const { data, isSuccess } = { data: { data: { data: [] } }, isSuccess: true };
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const valueMoney = (e) => {
-    return `${formatMoney(e)}đ`;
-  };
-
-  const valueSquareFormat = (e) => {
-    return `${e} m2`;
   };
 
   const category = useMemo(() => {
@@ -46,8 +36,8 @@ function SearchEnhanced(props) {
   }, [isSuccess]);
 
   const district = useMemo(() => {
-    if ((formValue.values).province) {
-      switch ((formValue.values).province) {
+    if (formValue.values.province) {
+      switch (formValue.values.province) {
         case 1:
           return hanoiDistrict;
         case 48:
@@ -68,44 +58,12 @@ function SearchEnhanced(props) {
       aria-describedby="alert-dialog-description"
     >
       <div className="p-5 px-10">
-        <DialogContentText>
+        <DialogContentText component={"span"}>
           <div className="font-bold">Chọn Giá:</div>
-          <div className="min-w-[300px]">
-            <Field
-              name="money"
-              as={Slider}
-              className="mt-5"
-              defaultValue={[infoAccout?.minMoney, infoAccout?.maxMoney]}
-              min={infoAccout?.minMoney}
-              max={infoAccout?.maxMoney}
-              onChange={(event, newValue) => {
-                formValue.setFieldValue("money", newValue);
-              }}
-              valueLabelDisplay="auto"
-              valueLabelFormat={valueMoney}
-            />
-          </div>
-          <div className="font-bold mt-5">Chọn Diện Tích:</div>
-          <div className="min-w-[300px]">
-            <Field
-              name="square"
-              as={Slider}
-              className="mt-5"
-              defaultValue={[infoAccout?.minSquare, infoAccout?.maxSquare]}
-              min={infoAccout?.minSquare}
-              max={infoAccout?.maxSquare}
-              onChange={(event, newValue) => {
-                formValue.setFieldValue("square", newValue);
-              }}
-              valueLabelDisplay="auto"
-              valueLabelFormat={valueSquareFormat}
-            />
-          </div>
           <div className="flex flex-1 justify-center my-3">
-            <FormControl fullWidth>
+            <FormControl fullWidth={true}>
               <InputLabel id="demo-simple-select-standard-label">
                 <div className="flex items-center space-x-2">
-                  <Image src="/image/home.png" width={22} height={22} alt="" />
                   <span className="text-[16px] block mt-1">Tìm kiếm theo</span>
                 </div>
               </InputLabel>
@@ -116,6 +74,7 @@ function SearchEnhanced(props) {
                 labelId="demo-simple-select-standard-label"
                 sx={{ width: 200 }}
                 name="type"
+                defaultValue={''}
               >
                 <MenuItem value="RENT">Thuê Nhà</MenuItem>
                 <MenuItem value="PAIR">Tìm Người Ở Ghép</MenuItem>
@@ -123,7 +82,7 @@ function SearchEnhanced(props) {
             </FormControl>
           </div>
           <div className="flex flex-1 justify-center my-3">
-            <FormControl fullWidth>
+            <FormControl fullWidth={true}>
               <InputLabel id="demo-simple-select-standard-label">
                 Khu Vực
               </InputLabel>
@@ -134,6 +93,7 @@ function SearchEnhanced(props) {
                 labelId="demo-simple-select-standard-label"
                 name="province"
                 sx={{ width: 200 }}
+                defaultValue={''}
               >
                 {province.map((pro) => (
                   <MenuItem key={pro.code} value={pro.code}>
@@ -144,7 +104,7 @@ function SearchEnhanced(props) {
             </FormControl>
           </div>
           <div className="flex flex-1 justify-center my-3">
-            <FormControl fullWidth>
+            <FormControl fullWidth={true}>
               <InputLabel id="demo-simple-select-standard-label">
                 Thể Loại
               </InputLabel>
@@ -155,6 +115,7 @@ function SearchEnhanced(props) {
                 labelId="demo-simple-select-standard-label"
                 name="category"
                 sx={{ width: 200 }}
+                defaultValue={''}
               >
                 {category.map((cate) => (
                   <MenuItem key={cate._id} value={cate._id}>
@@ -175,6 +136,7 @@ function SearchEnhanced(props) {
               variant="standard"
               labelId="demo-simple-select-standard-label"
               sx={{ width: 200 }}
+              defaultValue={''}
             >
               {district?.map((dis) => (
                 <MenuItem key={dis.code} value={dis.code}>

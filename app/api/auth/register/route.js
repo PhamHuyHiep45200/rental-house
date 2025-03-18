@@ -4,11 +4,13 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const data = await req.json();
-    const exists = await prisma.user.findUnique({
+    console.log(data);
+    const exists = await prisma.user.findFirst({
       where: {
-        email: data?.email,
+        email: data.email,
       },
     });
+    console.log(exists);
     if (exists) {
       return NextResponse.json(
         { error: "Người dùng đã tồn tại!" },

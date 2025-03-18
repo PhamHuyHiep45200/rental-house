@@ -1,24 +1,31 @@
+import { newHouseApi } from "@/service/frontend";
 import { formatMoney, getDistrict } from "@/utils/common.util";
 import { Grid } from "@mui/material";
 import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 function NewHouse() {
   const router = useRouter();
-  const { data, isFetching, isSuccess } = {
-    data: { data: { data: [] } },
-    isFetching: true,
-    isSuccess: true,
+
+  const [newHouse, setNewHouse] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const getTopFavorite = async () => {
+    setIsFetching(true);
+    try {
+      const res = await newHouseApi();
+      setNewHouse(res);
+    } catch (error) {
+    } finally {
+      setIsFetching(false);
+    }
   };
 
-  const newHouse = useMemo(() => {
-    if (isSuccess) {
-      return data.data.data;
-    }
-    return [];
-  }, [isSuccess, isFetching]);
+  useEffect(() => {
+    getTopFavorite();
+  }, []);
 
   const detailHouse = (id) => {
     router.push(`/detail_post/${id}`);

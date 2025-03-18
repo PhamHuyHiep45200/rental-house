@@ -1,18 +1,28 @@
 import { Grid } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import HeaderProduct from "../../base/HeaderProduct";
 import CardHome from "../../base/CardHome";
+import { randomHouseApi } from "@/service/frontend";
 
 function RandomHouse() {
-  const { data, isSuccess } = { data: { data: [] }, isSuccess: true };
+  const [randomHouse, setRandomHouse] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
-  const randomHouse = useMemo(() => {
-    if (isSuccess) {
-      return data.data;
+  const getTopFavorite = async () => {
+    setIsFetching(true);
+    try {
+      const res = await randomHouseApi();
+      setRandomHouse(res);
+    } catch (error) {
+    } finally {
+      setIsFetching(false);
     }
-    return [];
-  }, [isSuccess]);
+  };
+
+  useEffect(() => {
+    getTopFavorite();
+  }, []);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>

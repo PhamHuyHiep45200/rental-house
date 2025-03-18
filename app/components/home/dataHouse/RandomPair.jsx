@@ -1,17 +1,28 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import CardHome from "../../base/CardHome";
 import SlideHome from "../../loading/home/Slide";
+import { randomHouseApi } from "@/service/frontend";
 
 function RandomPair() {
-  const { data, isSuccess, isFetching } = { data: [], isSuccess: false, isFetching: false };
-  const randomHouse = useMemo(() => {
-    if (isSuccess) {
-      return data.data;
+  const [randomHouse, setRandomHouse] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const getTopFavorite = async () => {
+    setIsFetching(true);
+    try {
+      const res = await randomHouseApi();
+      setRandomHouse(res);
+    } catch (error) {
+    } finally {
+      setIsFetching(false);
     }
-    return [];
-  }, [isSuccess]);
+  };
+
+  useEffect(() => {
+    getTopFavorite();
+  }, []);
   return (
     <div className="px-5 py-10">
       <Swiper

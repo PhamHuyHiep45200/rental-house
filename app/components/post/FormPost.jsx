@@ -200,11 +200,6 @@ function FormPost(propsPost) {
               id="outlined-start-adornment"
               onChange={props.handleChange}
               onBlur={props.handleBlur}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">m2</InputAdornment>
-                ),
-              }}
               error={!!props.touched.square && Boolean(props.errors.square)}
             />
             <FormHelperText error sx={{ height: 30 }}>
@@ -220,11 +215,6 @@ function FormPost(propsPost) {
               id="outlined-start-adornment"
               onChange={props.handleChange}
               onBlur={props.handleBlur}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="start">Đồng/Tháng</InputAdornment>
-                ),
-              }}
               error={!!props.touched.money && Boolean(props.errors.money)}
             />
             <FormHelperText error sx={{ height: 30 }}>

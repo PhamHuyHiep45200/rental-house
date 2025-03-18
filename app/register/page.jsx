@@ -1,25 +1,17 @@
 "use client";
+import { registerUserApi } from "@/service/frontend";
 import { validationSchema } from "@/validation/register.validation";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  Button,
-  Divider,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { Button, Divider, FormControl, TextField } from "@mui/material";
 import { Field, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
-import React, { useEffect } from "react";
+import React from "react";
 
 const initialValues = {
   phone: "",
   password: "",
-  username: "",
+  email: "",
   avatar: "",
 };
 function Register() {
@@ -27,131 +19,96 @@ function Register() {
   const { enqueueSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const [registerUser, { isLoading, isSuccess, isError }] = [
-    () => {},
-    { isLoading: false, isSuccess: false, isError: false },
-  ];
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
+  const registerUser = async (data) => {
+    try {
+      await registerUserApi(data);
       enqueueSnackbar("Tạo tài khoản Thành Công", {
         variant: "success",
       });
       router.push("/login");
-    }
-    if (isError) {
-      enqueueSnackbar("Tạo tài khoản Thất Bại", {
+    } catch (error) {
+      enqueueSnackbar(error?.response?.data?.error, {
         variant: "error",
       });
     }
-  }, [isSuccess, isError]);
+  };
 
   return (
-    <div className="min-w-[400px]">
-      <div className="p-10 bg-white rounded-lg">
-        <div className="my-5 font-[500] text-center text-[30px]">Đăng Ký</div>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={(values) => {
-            registerUser(values);
-          }}
-        >
-          {(props) => (
-            <form onSubmit={props.handleSubmit}>
-              <div className="flex">
-                <div>
-                  <FormControl fullWidth>
-                    <Field
-                      as={TextField}
-                      label="Tên Người Dùng"
-                      name="username"
-                      variant="outlined"
-                      margin="dense"
-                      helperText={
-                        props.touched.username && props.errors.username
-                      }
-                      error={props.errors.username && props.touched.username}
-                    ></Field>
-                  </FormControl>
-                  <FormControl fullWidth>
-                    <Field
-                      as={TextField}
-                      label="Số Điện Thoại"
-                      name="phone"
-                      variant="outlined"
-                      margin="dense"
-                      helperText={props.touched.phone && props.errors.phone}
-                      error={props.errors.phone && props.touched.phone}
-                    ></Field>
-                  </FormControl>
-                  <FormControl fullWidth className="mt-5">
-                    <Field
-                      as={TextField}
-                      id="outlined-adornment-password"
-                      type={showPassword ? "text" : "password"}
-                      name="password"
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      helperText={
-                        props.touched.password && props.errors.password
-                      }
-                      error={props.touched.password && props.errors.password}
-                      label="Password"
-                    />
-                  </FormControl>
+    <div className="flex justify-center">
+      <div className="w-[400px]">
+        <div className="p-10 bg-white rounded-lg">
+          <div className="my-5 font-[500] text-center text-[30px]">Đăng Ký</div>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values) => {
+              registerUser(values);
+            }}
+          >
+            {(props) => (
+              <form onSubmit={props.handleSubmit}>
+                <div className="flex">
+                  <div>
+                    <FormControl fullWidth>
+                      <Field
+                        as={TextField}
+                        label="Tên Người Dùng"
+                        name="email"
+                        variant="outlined"
+                        margin="dense"
+                        helperText={props.touched.email && props.errors.email}
+                        error={props.errors.email && props.touched.email}
+                      ></Field>
+                    </FormControl>
+                    <FormControl fullWidth>
+                      <Field
+                        as={TextField}
+                        label="Số Điện Thoại"
+                        name="phone"
+                        variant="outlined"
+                        margin="dense"
+                        helperText={props.touched.phone && props.errors.phone}
+                        error={props.errors.phone && props.touched.phone}
+                      ></Field>
+                    </FormControl>
+                    <FormControl fullWidth className="mt-5">
+                      <Field
+                        as={TextField}
+                        id="outlined-adornment-password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        helperText={
+                          props.touched.password && props.errors.password
+                        }
+                        error={props.touched.password && props.errors.password}
+                        label="Password"
+                      />
+                    </FormControl>
+                  </div>
                 </div>
-                <FormControl fullWidth>
-                  {/* <Field
-                    as={UploadSignImage}
-                    name="avatar"
-                    onChange={(value) => {
-                      props.setFieldValue("avatar", value);
-                    }}
-                  /> */}
-                  <FormHelperText error sx={{ height: 30 }}>
-                    {props.touched.avatar && props.errors.avatar}
-                  </FormHelperText>
-                </FormControl>
-              </div>
 
-              <div className="mt-5 flex justify-center">
-                <Button
-                  variant="contained"
-                  color="info"
-                  size="large"
-                  type="submit"
-                  className="min-w-[400px]"
-                >
-                  Đăng Ký
-                </Button>
-              </div>
-              <div className="text-center my-5">
-                Bạn đã có tài khoản?{" "}
-                <Link className="text-[blue]" href="/login">
-                  Đăng Nhập
-                </Link>
-              </div>
-              <Divider />
-            </form>
-          )}
-        </Formik>
+                <div className="mt-5 flex justify-center">
+                  <Button
+                    variant="contained"
+                    color="info"
+                    size="large"
+                    type="submit"
+                    className="w-full"
+                  >
+                    Đăng Ký
+                  </Button>
+                </div>
+                <div className="text-center my-5">
+                  Bạn đã có tài khoản?{" "}
+                  <Link className="text-[blue]" href="/login">
+                    Đăng Nhập
+                  </Link>
+                </div>
+                <Divider />
+              </form>
+            )}
+          </Formik>
+        </div>
       </div>
     </div>
   );
