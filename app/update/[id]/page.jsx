@@ -86,7 +86,7 @@ function Update() {
   useEffect(() => {
     if (categorySuccess) {
       if (data) {
-        setCategorys(data.data.data);
+        setCategorys(data);
       } else {
         enqueueSnackbar("Đã có lỗi xảy ra", {
           variant: "error",

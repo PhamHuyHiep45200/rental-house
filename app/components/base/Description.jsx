@@ -1,5 +1,7 @@
-import { Editor } from "primereact/editor";
+"use client";
 import React, { useEffect, useState } from "react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function Desctiption(props) {
   const { value, onChange, placeholder } = props;
@@ -16,12 +18,7 @@ function Desctiption(props) {
     }
   }, [value]);
   return (
-    <Editor
-      value={text}
-      placeholder={placeholder}
-      onTextChange={(e) => changeDescription(e)}
-      style={{ height: "220px" }}
-    />
+    <ReactQuill theme="snow" value={text} onChange={setText} />
   );
 }
 

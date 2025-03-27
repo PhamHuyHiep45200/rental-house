@@ -13,8 +13,6 @@ import {
 } from "@mui/material";
 import React, { useMemo } from "react";
 import { Textarea } from "@mui/joy";
-import UploadMultipleImage from "@/components/base/UploadMultipleImage";
-import { IFormPost } from "@/model/base.model";
 import province from "@/data/province.json";
 import hanoiDistrict from "@/data/district/hanoi.json";
 import danangDistrict from "@/data/district/danang.json";
@@ -43,7 +41,7 @@ function FormPost(propsPost) {
   return (
     <form onSubmit={props.handleSubmit}>
       <h3>Loại Tin</h3>
-      <FormControl>
+      <FormControl className="mt-4 block">
         <InputLabel id="type">Thể Loại Tin</InputLabel>
         <Field
           as={Select}
@@ -126,7 +124,7 @@ function FormPost(propsPost) {
       </FormControl>
       <Divider />
       <h3>Thông Tin Mô Tả</h3>
-      <div>
+      <div className="mt-4">
         <FormControl>
           <InputLabel id="category">Chọn Chuyên Mục Của Bài</InputLabel>
           <Field
@@ -224,7 +222,7 @@ function FormPost(propsPost) {
         </div>
         <div className="mb-5">
           <FormLabel>Upload Ảnh</FormLabel>
-          <UploadMultipleImage
+          {/* <UploadMultipleImage
             value={props.values.imgs}
             onChange={(value) => {
               props.setFieldValue("imgs", [...value]);
@@ -232,7 +230,7 @@ function FormPost(propsPost) {
           />
           <FormHelperText error sx={{ height: 30 }}>
             {props.touched.imgs && props.errors.imgs}
-          </FormHelperText>
+          </FormHelperText> */}
         </div>
       </div>
       <div className="text-center">

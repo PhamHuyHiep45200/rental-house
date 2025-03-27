@@ -3,15 +3,11 @@ import { validationSchema } from "@/validation/post.validation";
 import { Container, Divider } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import FormPost from "@/components/post/FormPost";
-import {
-  useGetCategoryQuery,
-  usePostHouseMutation,
-} from "@/store/service/user.service";
 import { useSnackbar } from "notistack";
 import { useAppDispatch } from "@/store/hooks";
 import { startLoading, stopLoading } from "@/store/slide/common.slide";
 import { useRouter } from "next/navigation";
+import FormPost from "../components/post/FormPost";
 
 const initialValues = {
   category: "",
@@ -32,27 +28,26 @@ function Post() {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [postHouse, { isLoading, isSuccess, isError }] =
-    usePostHouseMutation();
+  const [postHouse, { isLoading, isSuccess, isError }] = [[], {isLoading: false, isSuccess:true, isError:false}]
   const {
     data,
     isFetching,
     isSuccess: categorySuccess,
-  } = useGetCategoryQuery({});
+  } = {data: [], isFetching: false, isSuccess: true}
 
-  useEffect(() => {
-    if (isSuccess) {
-      enqueueSnackbar("Tạo Bài Viết Thành Công! Vui lòng đợi Admin phê duyệt", {
-        variant: "success",
-      });
-      router.push("/me/house?tab=1");
-    }
-    if (isError) {
-      enqueueSnackbar("Đã có lỗi xảy ra", {
-        variant: "error",
-      });
-    }
-  }, [isSuccess, isError]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     enqueueSnackbar("Tạo Bài Viết Thành Công! Vui lòng đợi Admin phê duyệt", {
+  //       variant: "success",
+  //     });
+  //     router.push("/me/house?tab=1");
+  //   }
+  //   if (isError) {
+  //     enqueueSnackbar("Đã có lỗi xảy ra", {
+  //       variant: "error",
+  //     });
+  //   }
+  // }, [isSuccess, isError]);
 
   useEffect(() => {
     if (isLoading) {
@@ -65,7 +60,7 @@ function Post() {
   useEffect(() => {
     if (categorySuccess) {
       if (data) {
-        setCategorys(data.data.data);
+        setCategorys(data);
       } else {
         enqueueSnackbar("Đã có lỗi xảy ra", {
           variant: "error",

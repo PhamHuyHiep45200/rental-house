@@ -1,10 +1,4 @@
 "use client";
-import MaskImage from "@/components/base/MaskImage";
-import {
-  useDeleteHouseMutation,
-  useHouseUserQuery,
-  useUpdateHouseMutation,
-} from "@/store/service/user.service";
 import { formatMoney, getDistrict, getProvince } from "@/utils/common.util";
 import {
   Chip,
@@ -28,13 +22,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import BrushIcon from "@mui/icons-material/Brush";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { HOUSE_STATUS } from "@/config/house.config";
-import DialogConfirm from "@/components/base/DialogConfirm";
 import { useRouter } from "next/navigation";
+import DialogConfirm from "@/app/components/base/DialogConfirm";
+import MaskImage from "@/app/components/base/MaskImage";
 
 function House() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { tab: tabStatus } = router.query;
+  const tabStatus = false
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
@@ -43,26 +38,12 @@ function House() {
   const [open, setOpen] = useState(false);
   const [idAction, setIdAction] = useState('');
 
-  const { data, isSuccess, refetch } = useHouseUserQuery({
-    page: pagination.page,
-    status: HOUSE_STATUS[Number(router.query.tab ?? 0)],
-  });
-  const [updateHouse, { isSuccess: isSuccessUpdate, isError: isErrorUpdate }] =
-    useUpdateHouseMutation();
+  const { data, isSuccess, refetch } = {data: [], isSuccess: true, refetch: ()=>{}}
+  const [updateHouse, { isSuccess: isSuccessUpdate, isError: isErrorUpdate }] = [[], { isSuccess: true, isError: false }]
   
-    const [deleteHouse, { isSuccess: isSuccessDelete, isError: isErrorDelete }] =
-    useDeleteHouseMutation();
+    const [deleteHouse, { isSuccess: isSuccessDelete, isError: isErrorDelete }] = [[], { isSuccess: true, isError: false }]
 
-  const listHouse = useMemo(() => {
-    if (isSuccess) {
-      setPagination({
-        ...pagination,
-        total: data.data.total,
-      });
-      return data.data.data;
-    }
-    return [];
-  }, [isSuccess, data]);
+  const listHouse = []
 
   useEffect(() => {
     if (isSuccessUpdate) {
@@ -133,9 +114,9 @@ function House() {
   }
 
   useEffect(() => {
-    if (router.query.tab) {
-      setTab(Number(router.query.tab));
-    }
+    // if (router.query.tab) {
+      setTab(1);
+    // }
   }, [router]);
 
   return (
@@ -180,7 +161,7 @@ function House() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {listHouse.map((row) => (
+          {listHouse?.map((row) => (
             <TableRow
               key={row?._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -250,10 +231,10 @@ function House() {
         onSubmit={submitDialog}
       />
       <Divider />
-      {isSuccess && data.data.total > 0 && (
+      {isSuccess && data?.data?.total > 0 && (
         <div className="flex justify-center mt-5">
           <Pagination
-            count={Math.floor(pagination.total / 10 + 1)}
+            count={Math.floor(pagination?.total / 10 + 1)}
             page={pagination.page}
             onChange={changePage}
             color="primary"

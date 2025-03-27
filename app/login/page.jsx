@@ -2,7 +2,7 @@
 import { FORMAT_DEFAULT_DATE } from "@/config/date.config";
 import { loginUserData } from "@/service/frontend";
 import { useAppDispatch } from "@/store/hooks";
-import { setAuth } from "@/store/slide/auth.slide";
+import { setAuth, setUser } from "@/store/slide/auth.slide";
 import { startLoading, stopLoading } from "@/store/slide/common.slide";
 import { validationSchema } from "@/validation/login.validation";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const initialValues = {
   email: "",
@@ -30,6 +31,7 @@ function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
+  const dispath = useDispatch()
 
   const loginUserApi = async (values) => {
     setIsFetching(true);
@@ -39,6 +41,8 @@ function Login() {
       enqueueSnackbar("Đăng nhập thành công", {
         variant: "success",
       });
+      dispath(setAuth(true))
+      dispath(setUser(data))
       router.push("/");
     } catch (error) {
       enqueueSnackbar("Vui lòng kiểm tra lại thông tin Tài Khoản", {
