@@ -18,10 +18,11 @@ import hanoiDistrict from "@/data/district/hanoi.json";
 import danangDistrict from "@/data/district/danang.json";
 import hcmDistrict from "@/data/district/hcm.json";
 import { Field } from "formik";
-import Desctiption from "../base/Description";
+import Description from "../base/Description";
+import UploadMultipleImage from "../common/UploadMultipleImage";
 
 function FormPost(propsPost) {
-  const { props, categorys, type } = propsPost;
+  const { props, categories, type } = propsPost;
 
   const district = useMemo(() => {
     if (props.values.province) {
@@ -126,25 +127,25 @@ function FormPost(propsPost) {
       <h3>Thông Tin Mô Tả</h3>
       <div className="mt-4">
         <FormControl>
-          <InputLabel id="category">Chọn Chuyên Mục Của Bài</InputLabel>
+          <InputLabel id="categoryId">Chọn Chuyên Mục Của Bài</InputLabel>
           <Field
             as={Select}
-            id="category"
+            id="categoryId"
             label="Chọn Chuyên Mục Của Bài"
-            name="category"
+            name="categoryId"
             sx={{ width: 300 }}
             variant="outlined"
             margin="dense"
-            error={props.errors.category && props.touched.category}
+            error={props.errors.categoryId && props.touched.categoryId}
           >
-            {categorys?.map((cate) => (
-              <MenuItem value={cate._id} key={cate._id}>
+            {categories?.map((cate) => (
+              <MenuItem value={cate.id} key={cate.id}>
                 {cate.name}
               </MenuItem>
             ))}
           </Field>
           <FormHelperText error sx={{ height: 30 }}>
-            {props.touched.category && props.errors.category}
+            {props.touched.categoryId && props.errors.categoryId}
           </FormHelperText>
         </FormControl>
         <FormControl fullWidth>
@@ -164,7 +165,7 @@ function FormPost(propsPost) {
         </FormControl>
         <FormControl fullWidth>
           <Field
-            as={Desctiption}
+            as={Description}
             name="description"
             placeholder="Nội Dung Mô Tả ..."
             onChange={(value) => props.setFieldValue("description", value)}
@@ -222,7 +223,7 @@ function FormPost(propsPost) {
         </div>
         <div className="mb-5">
           <FormLabel>Upload Ảnh</FormLabel>
-          {/* <UploadMultipleImage
+          <UploadMultipleImage
             value={props.values.imgs}
             onChange={(value) => {
               props.setFieldValue("imgs", [...value]);
@@ -230,7 +231,7 @@ function FormPost(propsPost) {
           />
           <FormHelperText error sx={{ height: 30 }}>
             {props.touched.imgs && props.errors.imgs}
-          </FormHelperText> */}
+          </FormHelperText>
         </div>
       </div>
       <div className="text-center">

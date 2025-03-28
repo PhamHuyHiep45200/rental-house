@@ -1,25 +1,24 @@
 "use client";
+import { cn } from "@/utils/common.util";
 import React, { useEffect, useState } from "react";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
-function Desctiption(props) {
-  const { value, onChange, placeholder } = props;
-  const [text, setText] = useState(value);
+function Description(props) {
+  const { className, ...rest } = props;
 
-  const changeDescription = (e) => {
-    setText(e.htmlValue);
-    onChange?.(e.htmlValue);
-  };
-
-  useEffect(() => {
-    if (value) {
-      setText(value);
-    }
-  }, [value]);
   return (
-    <ReactQuill theme="snow" value={text} onChange={setText} />
+    <ReactQuill
+      theme="snow"
+      className={cn(
+        "text-black",
+        "[&>.ql-toolbar]:rounded-ss-md [&>.ql-toolbar]:rounded-se-md",
+        "[&>.ql-container]:rounded-es-md [&>.ql-container]:rounded-ee-md",
+        className
+      )}
+      {...rest}
+    />
   );
 }
 
-export default Desctiption;
+export default Description;

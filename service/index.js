@@ -32,4 +32,27 @@ instance.interceptors.response.use(
 const request = (url, options) => {
   return instance.request({ ...options, url: url });
 };
+
+// Base query cho RTK Query sử dụng axios
+export const axiosBaseQuery =
+  ({ baseUrl } = { baseUrl: "" }) =>
+  async ({ url, method, data, params }) => {
+    try {
+      const result = await request(`${baseUrl}${url}`, {
+        method,
+        data,
+        params,
+      });
+      return { data: result }; // Trả về dữ liệu theo định dạng RTK Query mong muốn
+    } catch (axiosError) {
+      const err = axiosError;
+      return {
+        error: {
+          status: err.response?.status,
+          data: err.response?.data || err.message,
+        },
+      };
+    }
+  };
+
 export default request;

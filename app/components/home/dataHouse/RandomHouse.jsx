@@ -38,7 +38,7 @@ function RandomHouse() {
       </Grid>
       {randomHouse.map((product) => {
         return (
-          <Grid item xs={6} key={product._id}>
+          <Grid item xs={6} key={product.id}>
             <CardHome house={product} />
           </Grid>
         );

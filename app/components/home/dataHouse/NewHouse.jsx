@@ -1,3 +1,5 @@
+"use client";
+
 import { newHouseApi } from "@/service/frontend";
 import { formatMoney, getDistrict } from "@/utils/common.util";
 import { Grid } from "@mui/material";
@@ -32,18 +34,18 @@ function NewHouse() {
   };
   return (
     <div>
-      {newHouse.map((e) => {
+      {newHouse.map((e, index) => {
         return (
           <Grid
             container
             spacing={[1]}
-            key={e._id}
+            key={index}
             className="mb-5 cursor-pointer bg-white py-2 px-2 rounded-lg"
             onClick={() => detailHouse(e._id)}
           >
             <Grid xs={4}>
               <Image
-                src={e?.imgs?.[0]}
+                src={`/uploads/${e?.imgs?.[0]}`}
                 width={110}
                 height={110}
                 alt=""
@@ -56,7 +58,7 @@ function NewHouse() {
                   <span className="font-semibold truncate-2">{e?.title}</span>
                   <div className="flex space-x-3 items-center mt-1">
                     <span className="text-[14px] text-gray-500">
-                      {moment(e?.createdAt).fromNow()}
+                      {"moment(e?.createdAt).fromNow()"}
                     </span>
                     <div className="flex items-center space-x-1">
                       <Image
