@@ -13,11 +13,11 @@ function DataHouse() {
       </Grid>
       <Grid xs={4}>
         <div className="mb-5">
-        <HeaderProduct
-          color="#ffd2d2"
-          icon={<FiberNewIcon color="error" sx={{ width: 40, height: 40 }} />}
-          title="Tin Mới Nhất"
-        />
+          <HeaderProduct
+            color="#ffd2d2"
+            icon={<FiberNewIcon color="error" sx={{ width: 40, height: 40 }} />}
+            title="Tin Mới Nhất"
+          />
         </div>
         <NewHouse />
       </Grid>

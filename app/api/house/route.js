@@ -92,13 +92,63 @@ export async function GET(req) {
 export async function POST(req) {
   try {
     const data = await req.json();
-    const houseCreate = await prisma.house.create({
-      data,
+    console.log({ data });
+
+    // Kiểm tra các field bắt buộc
+    const requiredFields = [
+      "title",
+      "description",
+      "address",
+      "district",
+      "province",
+      "square",
+      "money",
+      "contact",
+      "type",
+      "userId",
+      "categoryId",
+    ];
+    const missingFields = requiredFields.filter((field) => !data[field]);
+
+    if (missingFields.length > 0) {
+      return NextResponse.json(
+        { error: `Thiếu các field bắt buộc: ${missingFields.join(", ")}` },
+        { status: 400 }
+      );
+    }
+
+    // Kiểm tra userId và categoryId có tồn tại không
+    const user = await prisma.user.findUnique({ where: { id: data.userId } });
+    if (!user) {
+      return NextResponse.json(
+        { error: `User với id ${data.userId} không tồn tại` },
+        { status: 400 }
+      );
+    }
+
+    const category = await prisma.category.findUnique({
+      where: { id: data.categoryId },
     });
+    if (!category) {
+      return NextResponse.json(
+        { error: `Category với id ${data.categoryId} không tồn tại` },
+        { status: 400 }
+      );
+    }
+
+    // Ánh xạ dữ liệu để đảm bảo chỉ gửi các field hợp lệ
+    const houseCreate = await prisma.house.create({
+      data: {
+        ...data,
+        like: 0,
+      },
+    });
+
     return NextResponse.json(houseCreate);
   } catch (error) {
+    console.error("Error:", JSON.stringify(error, null, 2));
     return NextResponse.json(
-      { error: "Đã có lỗi từ Hệ Thống!" },
+      { error: "Đã có lỗi từ Hệ Thống!", details: error.message },
       { status: 500 }
     );
   }

@@ -47,7 +47,7 @@ function RandomPair() {
         ) : (
           randomHouse.map((e) => {
             return (
-              <SwiperSlide key={e._id} className="cursor-pointer">
+              <SwiperSlide key={e.id} className="cursor-pointer">
                 <CardHome house={e} />
               </SwiperSlide>
             );

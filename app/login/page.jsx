@@ -1,25 +1,13 @@
 "use client";
-import { FORMAT_DEFAULT_DATE } from "@/config/date.config";
 import { loginUserData } from "@/service/frontend";
-import { useAppDispatch } from "@/store/hooks";
 import { setAuth, setUser } from "@/store/slide/auth.slide";
-import { startLoading, stopLoading } from "@/store/slide/common.slide";
 import { validationSchema } from "@/validation/login.validation";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  Button,
-  Divider,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { Button, Divider, FormControl, TextField } from "@mui/material";
 import { Field, Formik } from "formik";
-import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const initialValues = {
@@ -31,18 +19,17 @@ function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const dispath = useDispatch()
+  const dispath = useDispatch();
 
   const loginUserApi = async (values) => {
     setIsFetching(true);
     try {
       const data = await loginUserData(values);
-      localStorage.setItem("user", JSON.stringify(data));
       enqueueSnackbar("Đăng nhập thành công", {
         variant: "success",
       });
-      dispath(setAuth(true))
-      dispath(setUser(data))
+      dispath(setAuth(true));
+      dispath(setUser(data));
       router.push("/");
     } catch (error) {
       enqueueSnackbar("Vui lòng kiểm tra lại thông tin Tài Khoản", {

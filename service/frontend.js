@@ -65,3 +65,20 @@ export async function loginUserData(data) {
     data,
   });
 }
+
+export async function uploadImages(data) {
+  return request(`/uploads`, {
+    method: "POST",
+    data,
+    headers: {
+      "Content-Type": "multipart/form-data", // Override header cho FormData
+    },
+  });
+}
+
+export async function createPost(data) {
+  return request(`/house`, {
+    method: "POST",
+    data,
+  });
+}

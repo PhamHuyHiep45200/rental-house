@@ -11,11 +11,12 @@ import RandomPair from "./components/home/dataHouse/RandomPair";
 import { useAppSelector } from "@/store/hooks";
 
 function Index() {
-  const {user,auth} = useAppSelector((state) => state.authSlice)
+  const { user, auth } = useAppSelector((state) => state.authSlice);
 
-  console.log('====================================');
-  console.log(user,auth);
-  console.log('====================================');
+  console.log("====================================");
+  console.log(user, auth);
+  console.log("====================================");
+
   return (
     <div className="">
       <HeaderProduct

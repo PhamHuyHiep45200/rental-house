@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getInitialState = () => {
+  if (typeof window !== "undefined") {
+    const savedAuth = localStorage.getItem("auth");
+    return savedAuth ? JSON.parse(savedAuth) : { auth: false, user: null };
+  }
+  return { auth: false, user: null };
+};
+
 const initialState = {
   auth: false,
   user: null,
@@ -9,13 +17,15 @@ const initialState = {
 
 export const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     setAuth: (state, action) => {
       state.auth = action.payload;
+      localStorage.setItem("auth", JSON.stringify(state));
     },
-    setUser: (state, acction) => {
-      state.user = acction.payload;
+    setUser: (state, action) => {
+      state.user = action.payload;
+      localStorage.setItem("auth", JSON.stringify(state));
     },
     setInfo: (state, action) => {
       state.infoAccout = action.payload;
