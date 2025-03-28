@@ -44,7 +44,8 @@ function Update() {
     skip: !id,
   });
 
-  const [updateHouse, { isLoading, isSuccess, isError }] = useUpdateHouseMutation();
+  const [updateHouse, { isLoading, isSuccess, isError }] =
+    useUpdateHouseMutation();
   const {
     data,
     isFetching,
@@ -53,9 +54,12 @@ function Update() {
 
   useEffect(() => {
     if (isSuccess) {
-      enqueueSnackbar("Cập Nhật Bài Viết Thành Công! Vui lòng đợi Admin phê duyệt", {
-        variant: "success",
-      });
+      enqueueSnackbar(
+        "Cập Nhật Bài Viết Thành Công! Vui lòng đợi Admin phê duyệt",
+        {
+          variant: "success",
+        }
+      );
       router.push("/me/house?tab=1");
       dispatch(userQuery.util.resetApiState());
     }
@@ -70,7 +74,7 @@ function Update() {
     if (successDetail) {
       setInitialValue({
         ...dataDetail.data,
-        category: dataDetail.data.category._id,
+        category: dataDetail.data.category.id,
       });
     }
   }, [successDetail, fetchingDetail]);
@@ -105,11 +109,13 @@ function Update() {
         onSubmit={(values) => {
           updateHouse({
             id,
-            data: values
+            data: values,
           });
         }}
       >
-        {(props) => <FormPost props={props} categorys={categorys} type='update' />}
+        {(props) => (
+          <FormPost props={props} categorys={categorys} type="update" />
+        )}
       </Formik>
     </Container>
   );

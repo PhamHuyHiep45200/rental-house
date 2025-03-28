@@ -11,11 +11,11 @@ import {
   startLoading,
   stopLoading,
 } from "@/store/slide/common.slide";
-import {
-  useAddFavoriteMutation,
-  useDeleteFavoriteMutation,
-  useFavoriteByIdQuery,
-} from "@/store/service/user.service";
+// import {
+//   useAddFavoriteMutation,
+//   useDeleteFavoriteMutation,
+//   useFavoriteByIdQuery,
+// } from "@/store/service/user.service";
 import { useSnackbar } from "notistack";
 import { setChangeFavorite } from "@/store/slide/auth.slide";
 
@@ -23,27 +23,27 @@ function InfoUser({ detail }) {
   const { user } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const [favorite, setFavorite] = useState(true);
+  const [favorite, setFavorite] = useState(false);
 
-  const {
-    data,
-    isSuccess: favoriteSuccess,
-    isError: favoriteError,
-    isFetching: favoriteFetching,
-    refetch,
-  } = useFavoriteByIdQuery({
-    house: detail._id,
-  });
-  const [addFavorite, { isLoading, isSuccess, isError }] =
-    useAddFavoriteMutation();
-  const [
-    deleteFavorite,
-    {
-      isLoading: loadingFavorite,
-      isSuccess: deleteFavoriteSuccess,
-      isError: deleteFavoriteError,
-    },
-  ] = useDeleteFavoriteMutation();
+  // const {
+  //   data,
+  //   isSuccess: favoriteSuccess,
+  //   isError: favoriteError,
+  //   isFetching: favoriteFetching,
+  //   refetch,
+  // } = useFavoriteByIdQuery({
+  //   house: detail.id,
+  // });
+  // const [addFavorite, { isLoading, isSuccess, isError }] =
+  //   useAddFavoriteMutation();
+  // const [
+  //   deleteFavorite,
+  //   {
+  //     isLoading: loadingFavorite,
+  //     isSuccess: deleteFavoriteSuccess,
+  //     isError: deleteFavoriteError,
+  //   },
+  // ] = useDeleteFavoriteMutation();
 
   const openChatModal = () => {
     dispatch(openChat());
@@ -52,59 +52,59 @@ function InfoUser({ detail }) {
   const favoriteHouse = () => {
     if (favorite) {
       deleteFavorite({
-        id: detail._id,
+        id: detail.id,
         data: { active: false },
       });
     } else {
       addFavorite({
-        house: detail._id,
-        user: user?._id,
+        house: detail.id,
+        user: user?.id,
       });
     }
   };
 
-  useEffect(() => {
-    if (favoriteSuccess) {
-      setFavorite(data.data);
-    }
-    if (favoriteError) {
-      enqueueSnackbar("Đã có lỗi xảy ra", {
-        variant: "error",
-      });
-    }
-  }, [favoriteSuccess, favoriteFetching, favoriteError]);
+  // useEffect(() => {
+  //   if (favoriteSuccess) {
+  //     setFavorite(data.data);
+  //   }
+  //   if (favoriteError) {
+  //     enqueueSnackbar("Đã có lỗi xảy ra", {
+  //       variant: "error",
+  //     });
+  //   }
+  // }, [favoriteSuccess, favoriteFetching, favoriteError]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(setChangeFavorite(Math.random()));
-      refetch();
-    }
-    if (isError) {
-      enqueueSnackbar("Đã có lỗi xảy ra", {
-        variant: "error",
-      });
-    }
-  }, [isSuccess, isError]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     dispatch(setChangeFavorite(Math.random()));
+  //     refetch();
+  //   }
+  //   if (isError) {
+  //     enqueueSnackbar("Đã có lỗi xảy ra", {
+  //       variant: "error",
+  //     });
+  //   }
+  // }, [isSuccess, isError]);
 
-  useEffect(() => {
-    if (isLoading || loadingFavorite) {
-      dispatch(startLoading());
-    } else {
-      dispatch(stopLoading());
-    }
-  }, [isLoading, loadingFavorite]);
+  // useEffect(() => {
+  //   if (isLoading || loadingFavorite) {
+  //     dispatch(startLoading());
+  //   } else {
+  //     dispatch(stopLoading());
+  //   }
+  // }, [isLoading, loadingFavorite]);
 
-  useEffect(() => {
-    if (deleteFavoriteSuccess) {
-      dispatch(setChangeFavorite(Math.random()));
-      refetch();
-    }
-    if (deleteFavoriteError) {
-      enqueueSnackbar("Đã có lỗi xảy ra", {
-        variant: "error",
-      });
-    }
-  }, [deleteFavoriteSuccess, deleteFavoriteError]);
+  // useEffect(() => {
+  //   if (deleteFavoriteSuccess) {
+  //     dispatch(setChangeFavorite(Math.random()));
+  //     refetch();
+  //   }
+  //   if (deleteFavoriteError) {
+  //     enqueueSnackbar("Đã có lỗi xảy ra", {
+  //       variant: "error",
+  //     });
+  //   }
+  // }, [deleteFavoriteSuccess, deleteFavoriteError]);
 
   return (
     <Card>

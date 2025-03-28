@@ -49,7 +49,7 @@ function SearchData() {
         <Grid container spacing={2}>
           {dataApi?.map((product) => {
             return (
-              <Grid item xs={3} key={product._id}>
+              <Grid item xs={3} key={product.id}>
                 <CardHome house={product} />
               </Grid>
             );

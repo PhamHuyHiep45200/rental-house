@@ -8,7 +8,7 @@ function UpdateUser({ open, refresh, closeAdd, data }) {
   const [form] = Form.useForm();
   const submit = async (e) => {
     try {
-      await updateUser(data._id, e);
+      await updateUser(data.id, e);
       refresh();
       onCloseAdd();
     } catch (error) {

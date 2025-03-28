@@ -1,7 +1,7 @@
 "use client";
 
 import { newHouseApi } from "@/service/frontend";
-import { formatMoney, getDistrict } from "@/utils/common.util";
+import { formatMoney, getDistrict, getImage } from "@/utils/common.util";
 import { Grid } from "@mui/material";
 import moment from "moment";
 import Image from "next/image";
@@ -41,14 +41,14 @@ function NewHouse() {
             spacing={[1]}
             key={index}
             className="mb-5 cursor-pointer bg-white py-2 px-2 rounded-lg"
-            onClick={() => detailHouse(e._id)}
+            onClick={() => detailHouse(e.id)}
           >
             <Grid xs={4}>
               <Image
-                src={`/uploads/${e?.imgs?.[0]}`}
+                src={getImage(e?.imgs?.[0])}
                 width={110}
                 height={110}
-                alt=""
+                alt="img"
                 className="rounded-md"
               />
             </Grid>
@@ -58,12 +58,12 @@ function NewHouse() {
                   <span className="font-semibold truncate-2">{e?.title}</span>
                   <div className="flex space-x-3 items-center mt-1">
                     <span className="text-[14px] text-gray-500">
-                      {"moment(e?.createdAt).fromNow()"}
+                      {moment(e?.createdAt).fromNow()}
                     </span>
                     <div className="flex items-center space-x-1">
                       <Image
-                        src="/image/address2.png"
-                        alt=""
+                        src="/image/location.png"
+                        alt="location"
                         width={20}
                         height={20}
                       />

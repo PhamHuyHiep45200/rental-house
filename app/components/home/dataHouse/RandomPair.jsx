@@ -13,7 +13,7 @@ function RandomPair() {
     setIsFetching(true);
     try {
       const res = await randomHouseApi();
-      setRandomHouse(res);
+      // setRandomHouse(res);
     } catch (error) {
     } finally {
       setIsFetching(false);

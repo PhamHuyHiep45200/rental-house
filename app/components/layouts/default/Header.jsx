@@ -22,6 +22,7 @@ function Header() {
             width={240}
             height={70}
             onClick={() => redirect("/")}
+            className="cursor-pointer"
           />
           {user && (
             <Button variant="contained" onClick={() => redirect("/post")}>

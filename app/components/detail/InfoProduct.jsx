@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -14,7 +16,12 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { formatMoney, getDistrict, getProvince } from "@/utils/common.util";
+import {
+  formatMoney,
+  getDistrict,
+  getImage,
+  getProvince,
+} from "@/utils/common.util";
 import moment from "moment";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -38,7 +45,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 function InfoProduct({ detail }) {
-  const [slideIndex, setSlideIndex] = useState < number > 0;
+  const [slideIndex, setSlideIndex] = useState(0);
 
   const changeSlide = (e) => {
     if (!Number.isNaN(e.realIndex)) {
@@ -89,6 +96,8 @@ function InfoProduct({ detail }) {
       },
     ];
   }, [detail]);
+
+  console.log(detail);
   return (
     <div>
       <Swiper
@@ -105,7 +114,7 @@ function InfoProduct({ detail }) {
           return (
             <SwiperSlide key={img} className="cursor-pointer">
               <div>
-                <MaskImage src={img} height={400} />
+                <MaskImage src={getImage(img)} height={400} />
               </div>
             </SwiperSlide>
           );

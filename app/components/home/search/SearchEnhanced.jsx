@@ -74,7 +74,7 @@ function SearchEnhanced(props) {
                 labelId="demo-simple-select-standard-label"
                 sx={{ width: 200 }}
                 name="type"
-                defaultValue={''}
+                defaultValue={""}
               >
                 <MenuItem value="RENT">Thuê Nhà</MenuItem>
                 <MenuItem value="PAIR">Tìm Người Ở Ghép</MenuItem>
@@ -93,7 +93,7 @@ function SearchEnhanced(props) {
                 labelId="demo-simple-select-standard-label"
                 name="province"
                 sx={{ width: 200 }}
-                defaultValue={''}
+                defaultValue={""}
               >
                 {province.map((pro) => (
                   <MenuItem key={pro.code} value={pro.code}>
@@ -115,10 +115,10 @@ function SearchEnhanced(props) {
                 labelId="demo-simple-select-standard-label"
                 name="category"
                 sx={{ width: 200 }}
-                defaultValue={''}
+                defaultValue={""}
               >
                 {category.map((cate) => (
-                  <MenuItem key={cate._id} value={cate._id}>
+                  <MenuItem key={cate.id} value={cate.id}>
                     {cate.name}
                   </MenuItem>
                 ))}
@@ -136,7 +136,7 @@ function SearchEnhanced(props) {
               variant="standard"
               labelId="demo-simple-select-standard-label"
               sx={{ width: 200 }}
-              defaultValue={''}
+              defaultValue={""}
             >
               {district?.map((dis) => (
                 <MenuItem key={dis.code} value={dis.code}>
