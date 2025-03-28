@@ -12,6 +12,12 @@ export const rtkQueryApi = createApi({
         params,
       }),
     }),
+    detailHouse: builder.query({
+      query: (id) => ({
+        url: `/house/${id}`,
+        method: "GET",
+      }),
+    }),
     // createTask: builder.mutation({
     //   query: (taskData) => ({
     //     url: "/tasks",
@@ -22,4 +28,4 @@ export const rtkQueryApi = createApi({
   }),
 });
 
-export const { useGetAllCategoryQuery } = rtkQueryApi;
+export const { useGetAllCategoryQuery, useDetailHouseQuery } = rtkQueryApi;

@@ -29,21 +29,27 @@ import MaskImage from "@/app/components/base/MaskImage";
 function House() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const tabStatus = false
+  const tabStatus = false;
   const [pagination, setPagination] = useState({
     total: 0,
     page: 1,
   });
   const [tab, setTab] = useState(0);
   const [open, setOpen] = useState(false);
-  const [idAction, setIdAction] = useState('');
+  const [idAction, setIdAction] = useState("");
 
-  const { data, isSuccess, refetch } = {data: [], isSuccess: true, refetch: ()=>{}}
-  const [updateHouse, { isSuccess: isSuccessUpdate, isError: isErrorUpdate }] = [[], { isSuccess: true, isError: false }]
-  
-    const [deleteHouse, { isSuccess: isSuccessDelete, isError: isErrorDelete }] = [[], { isSuccess: true, isError: false }]
+  const { data, isSuccess, refetch } = {
+    data: [],
+    isSuccess: true,
+    refetch: () => {},
+  };
+  const [updateHouse, { isSuccess: isSuccessUpdate, isError: isErrorUpdate }] =
+    [[], { isSuccess: true, isError: false }];
 
-  const listHouse = []
+  const [deleteHouse, { isSuccess: isSuccessDelete, isError: isErrorDelete }] =
+    [[], { isSuccess: true, isError: false }];
+
+  const listHouse = [];
 
   useEffect(() => {
     if (isSuccessUpdate) {
@@ -67,14 +73,11 @@ function House() {
     }
   }, [isSuccessDelete, isErrorDelete]);
 
-  const changeActive = (
-    e,
-    id
-  ) => {
+  const changeActive = (e, id) => {
     updateHouse({
       id,
       data: {
-        active: (e.target).checked,
+        active: e.target.checked,
       },
     });
   };
@@ -101,21 +104,21 @@ function House() {
 
   const submitDialog = () => {
     if (tabStatus === "1") {
-      router.push(`/update/${idAction}`)
-      return
+      router.push(`/update/${idAction}`);
+      return;
     }
-    deleteHouse({id: idAction})
-    setOpen(false)
+    deleteHouse({ id: idAction });
+    setOpen(false);
   };
 
   const openDialogAction = (id) => {
-    setOpen(true)
-    setIdAction(id)
-  }
+    setOpen(true);
+    setIdAction(id);
+  };
 
   useEffect(() => {
     // if (router.query.tab) {
-      setTab(1);
+    setTab(1);
     // }
   }, [router]);
 
@@ -156,14 +159,14 @@ function House() {
             <TableCell>Địa Chỉ</TableCell>
             <TableCell>Số Tiền</TableCell>
             <TableCell>Hoạt Động</TableCell>
-            {(tabStatus === "0") && <TableCell>Xoá Bài</TableCell>}
+            {tabStatus === "0" && <TableCell>Xoá Bài</TableCell>}
             {tabStatus === "1" && <TableCell>Sửa Bài</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
           {listHouse?.map((row) => (
             <TableRow
-              key={row?._id}
+              key={row?.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -198,20 +201,23 @@ function House() {
               <TableCell>
                 <Switch
                   checked={row?.active}
-                  onClick={(e) => changeActive(e, row?._id)}
+                  onClick={(e) => changeActive(e, row?.id)}
                 />
               </TableCell>
               {tabStatus === "1" && (
                 <TableCell>
                   <BrushIcon
                     className="text-[#ff9500] text-[30px]"
-                    onClick={() => openDialogAction(row?._id)}
+                    onClick={() => openDialogAction(row?.id)}
                   />
                 </TableCell>
               )}
               {(tabStatus === "0" || tabStatus === undefined) && (
                 <TableCell>
-                  <DeleteSweepIcon className="text-[red] text-[30px]" onClick={() => openDialogAction(row?._id)}/>
+                  <DeleteSweepIcon
+                    className="text-[red] text-[30px]"
+                    onClick={() => openDialogAction(row?.id)}
+                  />
                 </TableCell>
               )}
             </TableRow>

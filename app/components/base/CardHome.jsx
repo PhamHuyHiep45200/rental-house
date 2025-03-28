@@ -16,7 +16,7 @@ function CardHome(props) {
   const router = useRouter();
 
   const detailHouse = () => {
-    router.push(`/detail_post/${house._id}`);
+    router.push(`/detail_post/${house.id}`);
   };
 
   return (

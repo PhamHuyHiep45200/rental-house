@@ -8,9 +8,9 @@ import FiberNewIcon from "@mui/icons-material/FiberNew";
 function DataHouse() {
   return (
     <Grid container spacing={4}>
-      <Grid xs={8}>
+      {/* <Grid xs={8}>
         <RandomHouse />
-      </Grid>
+      </Grid> */}
       <Grid xs={4}>
         <div className="mb-5">
           <HeaderProduct

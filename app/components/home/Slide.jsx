@@ -39,7 +39,7 @@ export default function Slide() {
           className="mySwiper"
         >
           {favorite.map((e) => (
-            <SwiperSlide key={e._id} className="cursor-pointer">
+            <SwiperSlide key={e.id} className="cursor-pointer">
               <CardHome house={e} />
             </SwiperSlide>
           ))}
