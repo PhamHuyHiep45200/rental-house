@@ -9,6 +9,10 @@ export const formatMoney = (num) => {
   return new Intl.NumberFormat().format(+num);
 };
 
+export const openZalo = (phone) => {
+  window.open(`https://zalo.me/${phone}`, "_blank");
+};
+
 export const copyText = (text) => {
   navigator.clipboard.writeText(text);
 };
