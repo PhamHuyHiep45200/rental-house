@@ -1,6 +1,7 @@
 "use client";
 
 import { HOUSE_DEFAULT } from "@/contants/image";
+import { PRODUCT_STATUS } from "@/contants/product";
 import useAuthState from "@/hooks/useAuthState";
 import { useGetHouseForMeQuery } from "@/service/rtk-query";
 import { formatMoney, getDistrict } from "@/utils/common.util";
@@ -14,8 +15,9 @@ function NewHouse() {
 
   const { user } = useAuthState();
 
-  const { data = [], isFetching } = useGetHouseForMeQuery({
+  const { data, isFetching } = useGetHouseForMeQuery({
     userId: user?.id,
+    status: PRODUCT_STATUS.APPROVED,
   });
 
   const detailHouse = (id) => {
@@ -23,7 +25,7 @@ function NewHouse() {
   };
   return (
     <div>
-      {data?.map((e, index) => {
+      {data?.data?.map((e, index) => {
         return (
           <Grid
             container

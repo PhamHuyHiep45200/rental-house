@@ -66,7 +66,7 @@ function Post() {
       enqueueSnackbar("Tạo Bài Viết Thành Công! Vui lòng đợi Admin phê duyệt", {
         variant: "success",
       });
-      router.replace(`/me/house?tab=${response.id}`);
+      router.replace(`/me/house?tab=1`);
     } catch (error) {
       console.log({ error });
       enqueueSnackbar("Đã có lỗi xảy ra", {

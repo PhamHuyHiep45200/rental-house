@@ -4,25 +4,14 @@ import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CardHome from "../../base/CardHome";
 import SlideHome from "../../loading/home/Slide";
+import { useGetNewHouseQuery } from "@/service/rtk-query";
+import { HOUSE_TYPE } from "@/contants/house";
 
 function RandomPair() {
-  const [randomHouse, setRandomHouse] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
+  const { data, isFetching } = useGetNewHouseQuery({
+    type: HOUSE_TYPE.PAIR,
+  });
 
-  const getTopFavorite = async () => {
-    setIsFetching(true);
-    try {
-      const res = await newHouseApi();
-      setRandomHouse(res);
-    } catch (error) {
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    getTopFavorite();
-  }, []);
   return (
     <div className="px-5 py-10">
       <Swiper
@@ -30,7 +19,7 @@ function RandomPair() {
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
-        loop={randomHouse.length > 0}
+        // loop={data.length > 0}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -49,7 +38,7 @@ function RandomPair() {
         {isFetching ? (
           <SlideHome listNum={3} span={4} />
         ) : (
-          randomHouse?.map((e) => {
+          data?.data?.map((e) => {
             return (
               <SwiperSlide key={e.id} className="cursor-pointer">
                 <CardHome house={e} />

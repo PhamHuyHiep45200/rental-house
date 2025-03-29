@@ -1,15 +1,32 @@
 import { Button, Input } from "@mui/material";
-import React, { use, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchEnhanced from "./search/SearchEnhanced";
 import { Field, Formik } from "formik";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function Search() {
   const router = useRouter();
-  const query = router.query;
-  console.log(query);
-
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
+
+  // Chuyển `searchParams` thành object để dùng làm initialValues
+  const queryObject = Object.fromEntries(searchParams.entries());
+
+  const [initialValues, setInitialValues] = useState({
+    key_search: "",
+    district: "",
+    category: "",
+    province: "",
+    type: "",
+  });
+
+  useEffect(() => {
+    // Khi query thay đổi -> cập nhật `initialValues`
+    setInitialValues((prevValues) => ({
+      ...prevValues,
+      ...queryObject, // Cập nhật từ URL
+    }));
+  }, [searchParams]);
 
   const searchData = (values) => {
     const moneyQuery = values.money
@@ -25,32 +42,27 @@ function Search() {
         }
       : {};
 
-    delete values.money;
-    delete values.square;
-
     const query = {
       ...values,
       ...moneyQuery,
       ...squareQuery,
     };
 
+    delete query.money;
+    delete query.square;
+
     const searchParams = new URLSearchParams(query);
 
-    // Đẩy lên URL
     router.replace(`/search?${searchParams.toString()}`);
   };
+
   const handleOpen = () => {
     setOpen(true);
   };
 
   return (
     <Formik
-      initialValues={{
-        district: "",
-        category: "",
-        province: "",
-        type: "",
-      }}
+      initialValues={initialValues}
       enableReinitialize
       onSubmit={(values) => {
         searchData(values);

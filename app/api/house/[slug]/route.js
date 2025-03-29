@@ -45,3 +45,28 @@ export async function GET(req, { params }) {
     );
   }
 }
+
+export async function PUT(req) {
+  const data = await req.json();
+
+  // Kiểm tra slug có hợp lệ không
+  const houseId = Number(data.id);
+  if (isNaN(houseId)) {
+    return NextResponse.json({ error: "ID không hợp lệ" }, { status: 400 });
+  }
+
+  try {
+    const dataUpdate = await prisma.house.update({
+      where: { id: houseId },
+      data: data.data,
+    });
+    return NextResponse.json(dataUpdate);
+  } catch (error) {
+    console.log(JSON.stringify(error, null, 2));
+
+    return NextResponse.json(
+      { error: "Đã có lỗi từ Hệ Thống!" },
+      { status: 500 }
+    );
+  }
+}

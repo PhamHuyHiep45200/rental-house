@@ -42,9 +42,10 @@ export async function favoriteById() {
     method: "GET",
   });
 }
-export async function newHouseApi() {
+export async function newHouseApi(params) {
   return request(`/new-house`, {
     method: "GET",
+    params,
   });
 }
 export async function randomHouseApi() {
