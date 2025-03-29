@@ -45,15 +45,17 @@ model House {
   category    Category     @relation(fields: [categoryId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?    @updatedAt
+  Favourite   Favourite[]
 }
 
 model Favourite {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String?
   userId    Int
   houseId   Int
   active    Boolean   @default(false)
-  User      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+  house     House     @relation(fields: [houseId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 }

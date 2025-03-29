@@ -39,11 +39,11 @@ export default function LayoutDefault({ children }) {
     }
   }, [isFetching, isSuccess]);
 
-  useEffect(() => {
-    if (successFavorite) {
-      dispatch(setFavorite(dataFavorite.data.data.length));
-    }
-  }, [dataFavorite, successFavorite]);
+  // useEffect(() => {
+  //   if (successFavorite) {
+  //     dispatch(setFavorite(dataFavorite.data.data.length));
+  //   }
+  // }, [dataFavorite, successFavorite]);
 
   useEffect(() => {
     if (checkChangeUser) {
@@ -51,11 +51,11 @@ export default function LayoutDefault({ children }) {
     }
   }, [checkChangeUser]);
 
-  useEffect(() => {
-    if (changeFavorite) {
-      refreshFavorite();
-    }
-  }, [changeFavorite]);
+  // useEffect(() => {
+  //   if (changeFavorite) {
+  //     refreshFavorite();
+  //   }
+  // }, [changeFavorite]);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {

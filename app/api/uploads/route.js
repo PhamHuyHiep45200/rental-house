@@ -3,6 +3,7 @@ import path from "path";
 import { writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { getImage } from "@/utils/common.util";
 
 export const POST = async (req) => {
   try {
@@ -44,7 +45,7 @@ export const POST = async (req) => {
         const filePath = path.join(uploadDir, filename);
         await writeFile(filePath, buffer);
 
-        return filename; // Trả về tên file để response
+        return getImage(filename); // Trả về tên file để response
       })
     );
 

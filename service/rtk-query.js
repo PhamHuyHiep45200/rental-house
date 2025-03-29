@@ -18,14 +18,42 @@ export const rtkQueryApi = createApi({
         method: "GET",
       }),
     }),
-    // createTask: builder.mutation({
-    //   query: (taskData) => ({
-    //     url: "/tasks",
-    //     method: "POST",
-    //     data: taskData,
-    //   }),
-    // }),
+    getHouseForMe: builder.query({
+      query: (params) => ({
+        url: "/house/me",
+        method: "GET",
+        params,
+      }),
+    }),
+    favoriteById: builder.query({
+      query: (params) => ({
+        url: "/favoriteById",
+        method: "GET",
+        params,
+      }),
+    }),
+    addFavorite: builder.mutation({
+      query: (data) => ({
+        url: "/favourite",
+        method: "POST",
+        data,
+      }),
+    }),
+    deleteFavorite: builder.mutation({
+      query: (data) => ({
+        url: "/favourite",
+        method: "DELETE",
+        data,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllCategoryQuery, useDetailHouseQuery } = rtkQueryApi;
+export const {
+  useGetAllCategoryQuery,
+  useDetailHouseQuery,
+  useGetHouseForMeQuery,
+  useFavoriteByIdQuery,
+  useAddFavoriteMutation,
+  useDeleteFavoriteMutation,
+} = rtkQueryApi;

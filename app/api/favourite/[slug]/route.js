@@ -5,7 +5,7 @@ export async function PATCH(req, { params }) {
   const { slug } = await params;
   const data = await req.json();
   try {
-    const dataUpdate = await prisma.favourite.update({
+    const dataUpdate = await prisma.favorite.update({
       where: {
         id: slug,
       },

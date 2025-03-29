@@ -2,14 +2,10 @@ import { Avatar, Card, CardHeader } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import MaskImage from "./MaskImage";
-import {
-  formatMoney,
-  getDistrict,
-  getImage,
-  getProvince,
-} from "@/utils/common.util";
+import { formatMoney, getDistrict, getProvince } from "@/utils/common.util";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import { HOUSE_DEFAULT } from "@/contants/image";
 
 function CardHome(props) {
   const { house, favorite } = props;
@@ -33,20 +29,20 @@ function CardHome(props) {
         title={<span className="font-semibold">{house?.user?.username}</span>}
         subheader={<span>{moment(house?.updatedAt).fromNow()}</span>}
       />
-      <MaskImage height={200} src={getImage(house?.imgs?.[0])} />
+      <MaskImage sizeImage="width" src={house?.imgs?.[0] || HOUSE_DEFAULT} />
       <div className="p-5 pt-2">
-        <span className="block font-semibold truncate-2 h-[40px]">
+        <p className="font-semibold truncate-2 min-h-12 line-clamp-2">
           {house?.title}
-        </span>
+        </p>
         <div className="flex items-center my-2 space-x-1">
-          <Image src="/image/money.png" alt="" width={30} height={30} />
+          <Image src="/image/money.png" alt="" width={20} height={20} />
           <span className="font-semibold">
             {formatMoney(house?.money ?? 0)} đ
           </span>
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-1">
-            <Image src="/image/address.png" alt="" width={25} height={25} />
+            <Image src="/image/location.png" alt="" width={20} height={20} />
             <span
               className="text-gray-500 text-[14px] truncate"
               style={{ width: favorite ? "140px" : "auto" }}

@@ -1,9 +1,9 @@
-import { Grid } from "@mui/material";
+import { newHouseApi } from "@/service/frontend";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import React, { useEffect, useMemo, useState } from "react";
-import HeaderProduct from "../../base/HeaderProduct";
+import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
 import CardHome from "../../base/CardHome";
-import { randomHouseApi } from "@/service/frontend";
+import HeaderProduct from "../../base/HeaderProduct";
 
 function RandomHouse() {
   const [randomHouse, setRandomHouse] = useState([]);
@@ -12,7 +12,7 @@ function RandomHouse() {
   const getTopFavorite = async () => {
     setIsFetching(true);
     try {
-      const res = await randomHouseApi();
+      const res = await newHouseApi();
       setRandomHouse(res);
     } catch (error) {
     } finally {

@@ -16,12 +16,7 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Image from "next/image";
-import {
-  formatMoney,
-  getDistrict,
-  getImage,
-  getProvince,
-} from "@/utils/common.util";
+import { formatMoney, getDistrict, getProvince } from "@/utils/common.util";
 import moment from "moment";
 
 const StyledTableCell = styled(TableCell)(() => ({
@@ -110,11 +105,11 @@ function InfoProduct({ detail }) {
         className="mySwiper relative"
         onSlideChange={changeSlide}
       >
-        {detail?.imgs?.map((img) => {
+        {detail?.imgs?.map((img, index) => {
           return (
-            <SwiperSlide key={img} className="cursor-pointer">
+            <SwiperSlide key={index} className="cursor-pointer">
               <div>
-                <MaskImage src={getImage(img)} height={400} />
+                <MaskImage src={img || HOUSE_DEFAULT} className="h-[400px]" />
               </div>
             </SwiperSlide>
           );
