@@ -9,6 +9,7 @@ import Search from "./components/home/Search";
 import Slide from "./components/home/Slide";
 import RandomPair from "./components/home/dataHouse/RandomPair";
 import { useAppSelector } from "@/store/hooks";
+import Banner from "./components/home/Banner";
 
 function Index() {
   const { user, auth } = useAppSelector((state) => state.authSlice);
@@ -19,6 +20,7 @@ function Index() {
 
   return (
     <div className="">
+      <Banner />
       <HeaderProduct
         icon={
           <FavoriteIcon
@@ -31,6 +33,7 @@ function Index() {
         textColor="white"
         title={"Được Thích Nhiều Nhất"}
       />
+
       <Slide />
       <Container>
         <Search />

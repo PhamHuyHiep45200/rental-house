@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, IconButton, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -11,26 +11,48 @@ const VisuallyHiddenInput = styled("input")({
 
 // Component UploadMultipleImage
 const UploadMultipleImage = ({ value, onChange }) => {
-  const [previews, setPreviews] = useState(value || []); // Lưu trữ preview của ảnh
+  const [previews, setPreviews] = useState([]);
+
+  // Đồng bộ previews với value từ Formik
+  useEffect(() => {
+    if (value && value.length > 0) {
+      const newPreviews = value
+        .map((item) => {
+          if (item instanceof File) {
+            // Nếu là File object (từ input file)
+            return { file: item, url: URL.createObjectURL(item) };
+          } else if (typeof item === "string") {
+            // Nếu là URL (từ API)
+            return { file: null, url: item };
+          }
+          return null;
+        })
+        .filter(Boolean); // Loại bỏ các giá trị null
+
+      setPreviews(newPreviews);
+    } else {
+      setPreviews([]);
+    }
+  }, [value]);
 
   // Xử lý khi chọn file mới
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     const newFiles = files.map((file) => ({
       file,
-      url: URL.createObjectURL(file), // Tạo URL tạm để preview
+      url: URL.createObjectURL(file),
     }));
 
     const updatedFiles = [...previews, ...newFiles];
     setPreviews(updatedFiles);
-    onChange(updatedFiles.map((item) => item.file)); // Cập nhật giá trị cho Formik (chỉ gửi file)
+    onChange(updatedFiles.map((item) => item.file || item.url)); // Gửi cả file và URL
   };
 
   // Xử lý xóa ảnh
   const handleDelete = (index) => {
     const updatedFiles = previews.filter((_, i) => i !== index);
     setPreviews(updatedFiles);
-    onChange(updatedFiles.map((item) => item.file)); // Cập nhật lại Formik
+    onChange(updatedFiles.map((item) => item.file || item.url)); // Gửi cả file và URL
   };
 
   return (

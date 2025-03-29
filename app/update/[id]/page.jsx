@@ -3,20 +3,19 @@ import { validationSchema } from "@/validation/post.validation";
 import { Container, Divider } from "@mui/material";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import FormPost from "@/components/post/FormPost";
-import {
-  useDetailHouseQuery,
-  useGetCategoryQuery,
-  useUpdateHouseMutation,
-  userQuery,
-} from "@/store/service/user.service";
 import { useSnackbar } from "notistack";
 import { useAppDispatch } from "@/store/hooks";
 import { startLoading, stopLoading } from "@/store/slide/common.slide";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import FormPost from "@/app/components/post/FormPost";
+import {
+  useDetailHouseQuery,
+  useGetAllCategoryQuery,
+  useUpdateHouseMutation,
+} from "@/service/rtk-query";
 
 const initialValues = {
-  category: "",
+  categoryId: "",
   title: "",
   description: "",
   address: "",
@@ -30,11 +29,11 @@ const initialValues = {
 };
 function Update() {
   const { enqueueSnackbar } = useSnackbar();
-  const [categorys, setCategorys] = useState([]);
   const [initialValue, setInitialValue] = useState(initialValues);
   const router = useRouter();
+  const params = useParams();
   const dispatch = useAppDispatch();
-  const id = router.query.id;
+  const id = params.id;
 
   const {
     data: dataDetail,
@@ -42,15 +41,12 @@ function Update() {
     isSuccess: successDetail,
   } = useDetailHouseQuery(id, {
     skip: !id,
+    refetchOnMountOrArgChange: true,
   });
 
   const [updateHouse, { isLoading, isSuccess, isError }] =
     useUpdateHouseMutation();
-  const {
-    data,
-    isFetching,
-    isSuccess: categorySuccess,
-  } = useGetCategoryQuery({});
+  const { data, isSuccess: categorySuccess } = useGetAllCategoryQuery({});
 
   useEffect(() => {
     if (isSuccess) {
@@ -61,7 +57,6 @@ function Update() {
         }
       );
       router.push("/me/house?tab=1");
-      dispatch(userQuery.util.resetApiState());
     }
     if (isError) {
       enqueueSnackbar("Đã có lỗi xảy ra", {
@@ -73,8 +68,7 @@ function Update() {
   useEffect(() => {
     if (successDetail) {
       setInitialValue({
-        ...dataDetail.data,
-        category: dataDetail.data.category.id,
+        ...dataDetail,
       });
     }
   }, [successDetail, fetchingDetail]);
@@ -87,17 +81,6 @@ function Update() {
     }
   }, [isLoading]);
 
-  useEffect(() => {
-    if (categorySuccess) {
-      if (data) {
-        setCategorys(data);
-      } else {
-        enqueueSnackbar("Đã có lỗi xảy ra", {
-          variant: "error",
-        });
-      }
-    }
-  }, [isFetching]);
   return (
     <Container className="bg-white py-5 rounded-lg">
       <h1>Chỉnh Sửa Bài Đăng</h1>
@@ -107,6 +90,7 @@ function Update() {
         enableReinitialize
         validationSchema={validationSchema}
         onSubmit={(values) => {
+          delete values.user;
           updateHouse({
             id,
             data: values,
@@ -114,7 +98,7 @@ function Update() {
         }}
       >
         {(props) => (
-          <FormPost props={props} categorys={categorys} type="update" />
+          <FormPost props={props} categories={data?.data} type="update" />
         )}
       </Formik>
     </Container>

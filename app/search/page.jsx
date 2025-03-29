@@ -1,45 +1,30 @@
 "use client";
 import { Container, Divider, Grid, Pagination } from "@mui/material";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useMemo } from "react";
 import CardHome from "../components/base/CardHome";
 import Search from "../components/home/Search";
-import { newHouseApi } from "@/service/frontend";
+import useQueryString from "@/hooks/useQueryString";
+import { useGetNewHouseQuery } from "@/service/rtk-query";
 
 function SearchData() {
-  const router = useRouter();
-  const [dataApi, setDataApi] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [pagination, setPagination] = useState({
-    total: 0,
-    page: 1,
-  });
+  const searchParams = useSearchParams();
+  const { updateQueryString } = useQueryString();
 
-  const getSearchApi = async () => {
-    setIsFetching(true);
-    try {
-      const res = await newHouseApi({
-        ...router.query,
-        page_size: 8,
-        page: pagination.page,
-      });
-      setDataApi(res.data);
-    } catch (error) {
-    } finally {
-      setIsFetching(false);
-    }
+  // Chuyển searchParams thành object
+  const params = useMemo(
+    () => Object.fromEntries(searchParams.entries()),
+    [searchParams]
+  );
+
+  const page = params.page || "1";
+
+  // Gọi API với toàn bộ params từ URL
+  const { data, isFetching } = useGetNewHouseQuery(params);
+
+  const changePage = (_, newPage) => {
+    updateQueryString("page", newPage.toString());
   };
-
-  const changePage = (_, page) => {
-    setPagination({
-      ...pagination,
-      page: page,
-    });
-  };
-
-  useEffect(() => {
-    getSearchApi();
-  }, [pagination]);
 
   return (
     <Container>
@@ -47,20 +32,19 @@ function SearchData() {
       <div className="mt-[50px]">
         <Divider sx={{ marginBottom: 2 }} />
         <Grid container spacing={2}>
-          {dataApi?.map((product) => {
-            return (
-              <Grid item xs={3} key={product.id}>
-                <CardHome house={product} />
-              </Grid>
-            );
-          })}
+          {data?.data?.map((product) => (
+            <Grid item xs={3} key={product.id}>
+              <CardHome house={product} />
+            </Grid>
+          ))}
         </Grid>
         <div className="flex justify-center mt-5">
           <Pagination
-            count={Math.floor(pagination.total / 10 + 1)}
-            page={pagination.page}
+            count={data?.totalPage || 1}
+            page={Number(page)}
             onChange={changePage}
             color="primary"
+            disabled={isFetching}
           />
         </div>
       </div>

@@ -22,34 +22,52 @@ import React, { useEffect, useMemo, useState } from "react";
 import BrushIcon from "@mui/icons-material/Brush";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { HOUSE_STATUS } from "@/config/house.config";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DialogConfirm from "@/app/components/base/DialogConfirm";
 import MaskImage from "@/app/components/base/MaskImage";
+import { useGetHouseForMeQuery } from "@/service/rtk-query";
+import useQueryString from "@/hooks/useQueryString";
+import useAuthState from "@/hooks/useAuthState";
+import { PRODUCT_STATUS } from "@/contants/product";
 
 function House() {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const tabStatus = false;
-  const [pagination, setPagination] = useState({
-    total: 0,
-    page: 1,
-  });
-  const [tab, setTab] = useState(0);
+  const searchParams = useSearchParams();
+  const { updateQueryStrings, updateQueryString } = useQueryString();
+  const tab = searchParams.get("tab") || "1";
+  const page = searchParams.get("page") || "1";
+  const status = useMemo(() => {
+    switch (tab) {
+      case "0":
+        return PRODUCT_STATUS.APPROVED;
+      case "1":
+        return PRODUCT_STATUS.APPROVE;
+      case "2":
+        return PRODUCT_STATUS.UN_APPROVE;
+      default:
+        return PRODUCT_STATUS.APPROVED;
+    }
+  }, [tab]);
+
+  const { user } = useAuthState();
+
   const [open, setOpen] = useState(false);
   const [idAction, setIdAction] = useState("");
 
-  const { data, isSuccess, refetch } = {
-    data: [],
-    isSuccess: true,
-    refetch: () => {},
-  };
+  const { data, isSuccess, refetch } = useGetHouseForMeQuery(
+    {
+      userId: user?.id,
+      page,
+      status,
+    },
+    { skip: !user?.id }
+  );
   const [updateHouse, { isSuccess: isSuccessUpdate, isError: isErrorUpdate }] =
     [[], { isSuccess: true, isError: false }];
 
   const [deleteHouse, { isSuccess: isSuccessDelete, isError: isErrorDelete }] =
     [[], { isSuccess: true, isError: false }];
-
-  const listHouse = [];
 
   useEffect(() => {
     if (isSuccessUpdate) {
@@ -83,27 +101,18 @@ function House() {
   };
 
   const changePage = (_, page) => {
-    setPagination({
-      ...pagination,
-      page,
-    });
+    updateQueryString("page", page);
   };
 
   const handleChangeTabs = (_, tab) => {
-    setTab(tab);
-    setPagination({
-      ...pagination,
+    updateQueryStrings({
+      tab: tab.toString(),
       page: 1,
-    });
-    router.replace({
-      query: {
-        tab: tab,
-      },
     });
   };
 
   const submitDialog = () => {
-    if (tabStatus === "1") {
+    if (tab === "1") {
       router.push(`/update/${idAction}`);
       return;
     }
@@ -116,16 +125,10 @@ function House() {
     setIdAction(id);
   };
 
-  useEffect(() => {
-    // if (router.query.tab) {
-    setTab(1);
-    // }
-  }, [router]);
-
   return (
     <Container className="bg-white rounded-lg py-5">
       <Tabs
-        value={tab}
+        value={Number(tab)}
         onChange={handleChangeTabs}
         variant="scrollable"
         scrollButtons={false}
@@ -159,19 +162,22 @@ function House() {
             <TableCell>Địa Chỉ</TableCell>
             <TableCell>Số Tiền</TableCell>
             <TableCell>Hoạt Động</TableCell>
-            {tabStatus === "0" && <TableCell>Xoá Bài</TableCell>}
-            {tabStatus === "1" && <TableCell>Sửa Bài</TableCell>}
+            {tab === "0" && <TableCell>Xoá Bài</TableCell>}
+            {tab === "1" && <TableCell>Sửa Bài</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
-          {listHouse?.map((row) => (
+          {data?.data?.map((row) => (
             <TableRow
               key={row?.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 <div className="flex items-start space-x-2">
-                  <MaskImage src={row?.imgs?.[0]} width={150} height={100} />
+                  <MaskImage
+                    src={row?.imgs?.[0]}
+                    className="w-[150px] h-[100px]"
+                  />
                   <div>
                     <span className="font-semibold w-[200px] truncate-2">
                       {row?.title}
@@ -204,15 +210,15 @@ function House() {
                   onClick={(e) => changeActive(e, row?.id)}
                 />
               </TableCell>
-              {tabStatus === "1" && (
+              {tab === "1" && (
                 <TableCell>
                   <BrushIcon
-                    className="text-[#ff9500] text-[30px]"
+                    className="text-[#ff9500] text-[30px] cursor-pointer"
                     onClick={() => openDialogAction(row?.id)}
                   />
                 </TableCell>
               )}
-              {(tabStatus === "0" || tabStatus === undefined) && (
+              {(tab === "0" || tab === undefined) && (
                 <TableCell>
                   <DeleteSweepIcon
                     className="text-[red] text-[30px]"
@@ -226,22 +232,22 @@ function House() {
       </Table>
       <DialogConfirm
         openDialog={open}
-        title={tabStatus === "1" ? "Chỉnh Sửa Bài" : "Xoá Bài"}
+        title={tab === "1" ? "Chỉnh Sửa Bài" : "Xoá Bài"}
         textContent={
-          tabStatus === "1"
+          tab === "1"
             ? "Bạn Muốn Chỉnh Sửa Bài?"
             : "Bạn Chắc Chắn Muốn Xoá Bài?"
         }
-        textSubmit={tabStatus === "1" ? "Chỉnh Sửa" : "Xoá Bài"}
+        textSubmit={tab === "1" ? "Chỉnh Sửa" : "Xoá Bài"}
         onClose={() => setOpen(false)}
         onSubmit={submitDialog}
       />
       <Divider />
-      {isSuccess && data?.data?.total > 0 && (
+      {isSuccess && data?.totalRecord > 0 && (
         <div className="flex justify-center mt-5">
           <Pagination
-            count={Math.floor(pagination?.total / 10 + 1)}
-            page={pagination.page}
+            count={data.totalRecord}
+            page={page}
             onChange={changePage}
             color="primary"
           />

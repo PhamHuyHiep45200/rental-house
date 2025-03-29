@@ -43,14 +43,14 @@ function CardHome(props) {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-1">
             <Image src="/image/location.png" alt="" width={20} height={20} />
-            <span
-              className="text-gray-500 text-[14px] truncate"
+            <p
+              className="text-gray-500 text-[14px] line-clamp-1"
               style={{ width: favorite ? "140px" : "auto" }}
             >
               {getProvince(house?.province)}
               {" ~ "}
               {getDistrict(house?.province, house?.district)}
-            </span>
+            </p>
           </div>
           {favorite && (
             <Image

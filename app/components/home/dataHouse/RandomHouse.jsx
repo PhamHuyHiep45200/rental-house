@@ -13,7 +13,7 @@ function RandomHouse() {
     setIsFetching(true);
     try {
       const res = await newHouseApi();
-      setRandomHouse(res);
+      setRandomHouse(res.data);
     } catch (error) {
     } finally {
       setIsFetching(false);
