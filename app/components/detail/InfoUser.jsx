@@ -4,7 +4,7 @@ import MarkUnreadChatAltOutlinedIcon from "@mui/icons-material/MarkUnreadChatAlt
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import React, { act, useEffect, useState } from "react";
-import { copyText } from "@/utils/common.util";
+import { copyText, openZalo } from "@/utils/common.util";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   openChat,
@@ -124,10 +124,10 @@ function InfoUser({ detail }) {
         </span>
         <div className="my-2 font-semibold flex items-center space-x-2 text-primary">
           <PhoneInTalkOutlinedIcon />
-          <Tooltip title="Sao Chép" arrow>
+          <Tooltip title="Zalo người đăng" arrow>
             <span
               className="underline cursor-pointer"
-              onClick={() => copyText(detail?.user?.phone)}
+              onClick={() => openZalo(detail?.user?.phone)}
             >
               {detail?.user?.phone}
             </span>
