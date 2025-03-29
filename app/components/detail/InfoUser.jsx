@@ -3,7 +3,7 @@ import PhoneInTalkOutlinedIcon from "@mui/icons-material/PhoneInTalkOutlined";
 import MarkUnreadChatAltOutlinedIcon from "@mui/icons-material/MarkUnreadChatAltOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import { copyText } from "@/utils/common.util";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -11,13 +11,13 @@ import {
   startLoading,
   stopLoading,
 } from "@/store/slide/common.slide";
-// import {
-//   useAddFavoriteMutation,
-//   useDeleteFavoriteMutation,
-//   useFavoriteByIdQuery,
-// } from "@/store/service/user.service";
 import { useSnackbar } from "notistack";
 import { setChangeFavorite } from "@/store/slide/auth.slide";
+import {
+  useAddFavoriteMutation,
+  useDeleteFavoriteMutation,
+  useFavoriteByIdQuery,
+} from "@/service/rtk-query";
 
 function InfoUser({ detail }) {
   const { user } = useAppSelector((state) => state.authSlice);
@@ -25,25 +25,31 @@ function InfoUser({ detail }) {
   const { enqueueSnackbar } = useSnackbar();
   const [favorite, setFavorite] = useState(false);
 
-  // const {
-  //   data,
-  //   isSuccess: favoriteSuccess,
-  //   isError: favoriteError,
-  //   isFetching: favoriteFetching,
-  //   refetch,
-  // } = useFavoriteByIdQuery({
-  //   house: detail.id,
-  // });
-  // const [addFavorite, { isLoading, isSuccess, isError }] =
-  //   useAddFavoriteMutation();
-  // const [
-  //   deleteFavorite,
-  //   {
-  //     isLoading: loadingFavorite,
-  //     isSuccess: deleteFavoriteSuccess,
-  //     isError: deleteFavoriteError,
-  //   },
-  // ] = useDeleteFavoriteMutation();
+  const {
+    data,
+    isSuccess: favoriteSuccess,
+    isError: favoriteError,
+    isFetching: favoriteFetching,
+    refetch,
+  } = useFavoriteByIdQuery(
+    {
+      houseId: detail?.id,
+      userId: user?.id,
+    },
+    {
+      skip: !detail?.id || !user?.id,
+    }
+  );
+  const [addFavorite, { isLoading, isSuccess, isError }] =
+    useAddFavoriteMutation();
+  const [
+    deleteFavorite,
+    {
+      isLoading: loadingFavorite,
+      isSuccess: deleteFavoriteSuccess,
+      isError: deleteFavoriteError,
+    },
+  ] = useDeleteFavoriteMutation();
 
   const openChatModal = () => {
     dispatch(openChat());
@@ -52,59 +58,60 @@ function InfoUser({ detail }) {
   const favoriteHouse = () => {
     if (favorite) {
       deleteFavorite({
-        id: detail.id,
-        data: { active: false },
+        id: data.data.id,
       });
     } else {
       addFavorite({
-        house: detail.id,
-        user: user?.id,
+        houseId: detail.id,
+        userId: user?.id,
+        // name: detail.title,
+        active: true,
       });
     }
   };
 
-  // useEffect(() => {
-  //   if (favoriteSuccess) {
-  //     setFavorite(data.data);
-  //   }
-  //   if (favoriteError) {
-  //     enqueueSnackbar("Đã có lỗi xảy ra", {
-  //       variant: "error",
-  //     });
-  //   }
-  // }, [favoriteSuccess, favoriteFetching, favoriteError]);
+  useEffect(() => {
+    if (favoriteSuccess) {
+      setFavorite(!!data.data);
+    }
+    if (favoriteError) {
+      enqueueSnackbar("Đã có lỗi xảy ra", {
+        variant: "error",
+      });
+    }
+  }, [favoriteSuccess, favoriteFetching, favoriteError]);
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     dispatch(setChangeFavorite(Math.random()));
-  //     refetch();
-  //   }
-  //   if (isError) {
-  //     enqueueSnackbar("Đã có lỗi xảy ra", {
-  //       variant: "error",
-  //     });
-  //   }
-  // }, [isSuccess, isError]);
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setChangeFavorite(Math.random()));
+      refetch();
+    }
+    if (isError) {
+      enqueueSnackbar("Đã có lỗi xảy ra", {
+        variant: "error",
+      });
+    }
+  }, [isSuccess, isError]);
 
-  // useEffect(() => {
-  //   if (isLoading || loadingFavorite) {
-  //     dispatch(startLoading());
-  //   } else {
-  //     dispatch(stopLoading());
-  //   }
-  // }, [isLoading, loadingFavorite]);
+  useEffect(() => {
+    if (isLoading || loadingFavorite) {
+      dispatch(startLoading());
+    } else {
+      dispatch(stopLoading());
+    }
+  }, [isLoading, loadingFavorite]);
 
-  // useEffect(() => {
-  //   if (deleteFavoriteSuccess) {
-  //     dispatch(setChangeFavorite(Math.random()));
-  //     refetch();
-  //   }
-  //   if (deleteFavoriteError) {
-  //     enqueueSnackbar("Đã có lỗi xảy ra", {
-  //       variant: "error",
-  //     });
-  //   }
-  // }, [deleteFavoriteSuccess, deleteFavoriteError]);
+  useEffect(() => {
+    if (deleteFavoriteSuccess) {
+      dispatch(setChangeFavorite(Math.random()));
+      refetch();
+    }
+    if (deleteFavoriteError) {
+      enqueueSnackbar("Đã có lỗi xảy ra", {
+        variant: "error",
+      });
+    }
+  }, [deleteFavoriteSuccess, deleteFavoriteError]);
 
   return (
     <Card>
@@ -120,7 +127,7 @@ function InfoUser({ detail }) {
           <Tooltip title="Sao Chép" arrow>
             <span
               className="underline cursor-pointer"
-              onClick={() => copyText("0397349543")}
+              onClick={() => copyText(detail?.user?.phone)}
             >
               {detail?.user?.phone}
             </span>

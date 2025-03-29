@@ -6,6 +6,9 @@ import { Provider } from "react-redux";
 import { makeStore } from "@/store/store";
 import { useRef } from "react";
 import LayoutDefault from "./components/layouts/default";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
 
 export default function RootLayout({ children }) {
   const storeRef = useRef(null);

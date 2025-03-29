@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { newHouseApi } from "@/service/frontend";
+import { useEffect, useState } from "react";
+import { Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectCoverflow, Pagination } from "swiper/modules";
 import CardHome from "../../base/CardHome";
 import SlideHome from "../../loading/home/Slide";
-import { randomHouseApi } from "@/service/frontend";
 
 function RandomPair() {
   const [randomHouse, setRandomHouse] = useState([]);
@@ -12,8 +12,8 @@ function RandomPair() {
   const getTopFavorite = async () => {
     setIsFetching(true);
     try {
-      const res = await randomHouseApi();
-      // setRandomHouse(res);
+      const res = await newHouseApi();
+      setRandomHouse(res);
     } catch (error) {
     } finally {
       setIsFetching(false);
@@ -30,7 +30,7 @@ function RandomPair() {
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
-        loop
+        loop={randomHouse.length > 0}
         coverflowEffect={{
           rotate: 50,
           stretch: 0,
@@ -38,14 +38,18 @@ function RandomPair() {
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={true}
-        modules={[EffectCoverflow, Pagination]}
+        autoplay={{
+          delay: 3000, // Thời gian delay giữa các slide (3000ms = 3 giây)
+          disableOnInteraction: false, // Tiếp tục autoplay ngay cả khi người dùng tương tác
+        }}
+        pagination={{ clickable: true }}
+        modules={[EffectCoverflow, Pagination, Autoplay]}
         className="mySwiper"
       >
         {isFetching ? (
           <SlideHome listNum={3} span={4} />
         ) : (
-          randomHouse.map((e) => {
+          randomHouse?.map((e) => {
             return (
               <SwiperSlide key={e.id} className="cursor-pointer">
                 <CardHome house={e} />

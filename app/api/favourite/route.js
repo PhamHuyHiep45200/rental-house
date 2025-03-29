@@ -1,6 +1,7 @@
 import { skip } from "@/config/api";
 import { DEFAULT_PAGING } from "@/contants/api";
 import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
@@ -40,10 +41,7 @@ export async function POST(req) {
       },
     });
     if (favouriteFind) {
-      return NextResponse.json(
-        { error: "Bài viết đã được yêu thích!" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Bài viết đã được yêu thích!" });
     }
     const favorite = await prisma.favourite.create({
       data: body,
@@ -51,7 +49,10 @@ export async function POST(req) {
     return NextResponse.json(favorite);
   } catch (error) {
     return NextResponse.json(
-      { error: "Đã có lỗi từ Hệ Thống!" },
+      {
+        error: "Đã có lỗi từ Hệ Thống!: ",
+        detail: error,
+      },
       { status: 500 }
     );
   }
@@ -62,16 +63,13 @@ export async function DELETE(req) {
   try {
     const dataDelete = await prisma.favourite.delete({
       where: {
-        id: body.favouriteId,
-        userId: body.userId,
+        id: body.id,
       },
     });
     return NextResponse.json(dataDelete);
   } catch (error) {
-    console.log(error);
-
     return NextResponse.json(
-      { error: "Đã có lỗi từ Hệ Thống!" },
+      { error: "Đã có lỗi từ Hệ Thống!", detail: error },
       { status: 500 }
     );
   }

@@ -49,7 +49,7 @@ export async function GET(req) {
     const sortCondition = {
       where: {
         status: status || "ACTIVE",
-        active: active || true,
+        // active: active || true,
         ...province_condition,
         ...district_condition,
         ...category_condition,
@@ -70,10 +70,16 @@ export async function GET(req) {
           },
         ],
       },
+
       skip: skip(page),
       take: DEFAULT_PAGING.page_size,
     };
-    const searchHouse = await prisma.house.findMany(sortCondition);
+    const searchHouse = await prisma.house.findMany({
+      ...sortCondition,
+      include: {
+        category: true,
+      },
+    });
     const total = await prisma.house.count(sortCondition);
 
     return NextResponse.json(
@@ -164,6 +170,31 @@ export async function PATCH(req) {
         id: houseId,
       },
       data,
+    });
+    return NextResponse.json(dataUpdate);
+  } catch (error) {
+    console.log(error);
+
+    return NextResponse.json(
+      { error: "Đã có lỗi từ Hệ Thống!" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req) {
+  const data = await req.json();
+  const listId = data?.listId;
+  try {
+    const dataUpdate = await prisma.house.updateMany({
+      where: {
+        id: {
+          in: listId,
+        },
+      },
+      data: {
+        status: data.status,
+      },
     });
     return NextResponse.json(dataUpdate);
   } catch (error) {

@@ -3,18 +3,17 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    const favourite = await prisma.favourite.findMany({
-      include: {
-        User: true,
+    const data = await prisma.favourite.findMany({
+      select: {
+        house: true, // Chỉ lấy dữ liệu của house, không cần lọc lại bằng map()
       },
-      skip: 0,
-      take: 10,
+      take: 10, // Giới hạn số lượng kết quả
     });
 
-    return NextResponse.json(favourite);
+    // Chuyển về mảng house
+    return NextResponse.json(data.map((item) => item.house));
   } catch (error) {
     console.log(error);
-
     return NextResponse.json(
       { error: "Đã có lỗi từ Hệ Thống!" },
       { status: 500 }

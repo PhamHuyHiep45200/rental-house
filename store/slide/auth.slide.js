@@ -5,14 +5,7 @@ const getInitialState = () => {
     const savedAuth = localStorage.getItem("auth");
     return savedAuth ? JSON.parse(savedAuth) : { auth: false, user: null };
   }
-  return { auth: false, user: null };
-};
-
-const initialState = {
-  auth: false,
-  user: null,
-  infoAccout: null,
-  favorite: 0,
+  return { auth: false, user: null, infoAccount: null, favorite: 0 };
 };
 
 export const authSlice = createSlice({

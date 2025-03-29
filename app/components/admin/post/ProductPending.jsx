@@ -1,8 +1,11 @@
+"use client";
+
 import React, { useEffect, useMemo, useState } from "react";
 import { getAllProduct, updateStatusProduct } from "@/service/admin/product";
 import { formatMoney } from "@/utils/common.util";
 import { Button, Image, Pagination, Table } from "antd";
 import { PRODUCT_STATUS } from "@/contants/product";
+import { HOUSE_DEFAULT } from "@/contants/image";
 
 function ProductPending({ checkCall, resetData }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -62,45 +65,47 @@ function ProductPending({ checkCall, resetData }) {
   useEffect(() => {
     getAllProductPendding();
   }, [checkCall, pagination.page]);
-  const columns = useMemo(() => {
-    return [
-      {
-        title: "Nhà Trọ",
-        render: (_, record) => (
-          <div className="flex items-center space-x-4">
-            <Image
-              src={record?.imgs[0]}
-              alt=""
-              className="max-w-[100px] min-w-[100px] min-h-[100px] max-h-[100px] rounded-[6px]"
-            />
-            <div className="max-w-[200px]">{record?.title}</div>
-            <div>
-              <span className="block text-[12px] text-[#999] italic">
-                Thể Loại
-              </span>
-            </div>
+  const columns = [
+    {
+      key: "imgs",
+      dataIndex: "imgs",
+      title: "Nhà Trọ",
+      render: (imgs, record) => (
+        <div className="flex items-center space-x-4">
+          <Image
+            src={imgs[0] || HOUSE_DEFAULT}
+            alt=""
+            className="max-w-[100px] min-w-[100px] min-h-[100px] max-h-[100px] rounded-[6px]"
+          />
+          <div className="max-w-[200px]">{record?.title}</div>
+          <div>
+            <span className="block text-[12px] text-[#999] italic">
+              Thể Loại
+            </span>
           </div>
-        ),
-      },
-      {
-        title: "Thể Loại",
-        render: (_, record) => <span>{record.category.name}</span>,
-      },
-      {
-        title: "Kiểu Bài Đăng",
-        align: "center",
-        render: (_, record) => <span>{record.type} đ</span>,
-      },
-      {
-        title: "Giá",
-        render: (_, record) => (
-          <span className="text-[red] font-semibold">
-            {formatMoney(record.money)} đ
-          </span>
-        ),
-      },
-    ];
-  }, [data]);
+        </div>
+      ),
+    },
+    {
+      title: "Thể Loại",
+      render: (_, record) => <span>{record?.category?.name}</span>,
+    },
+    {
+      key: "type",
+      dataIndex: "type",
+      title: "Kiểu Bài Đăng",
+      align: "center",
+      // render: (_, record) => <span>{record?.type}</span>,
+    },
+    {
+      key: "money",
+      dataIndex: "money",
+      title: "Giá",
+      render: (money) => (
+        <span className="text-[red] font-semibold">{formatMoney(money)} đ</span>
+      ),
+    },
+  ];
   const changePage = (page) => {
     setPagination({
       ...pagination,

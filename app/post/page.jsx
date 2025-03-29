@@ -41,7 +41,6 @@ function Post() {
       // Tạo FormData để gửi lên API
       const formData = new FormData();
       imgs.forEach((file) => {
-        console.log("File:", file);
         formData.append("files", file);
       });
 
@@ -56,7 +55,6 @@ function Post() {
   };
 
   const handleSubmit = async (values) => {
-    console.log("Form values:", values);
     const imgs = await handleUpload(values.imgs);
     values.imgs = imgs;
 
@@ -68,8 +66,9 @@ function Post() {
       enqueueSnackbar("Tạo Bài Viết Thành Công! Vui lòng đợi Admin phê duyệt", {
         variant: "success",
       });
-      router.replace(`/me/house?tab=${response.data.id}`);
+      router.replace(`/me/house?tab=${response.id}`);
     } catch (error) {
+      console.log({ error });
       enqueueSnackbar("Đã có lỗi xảy ra", {
         variant: "error",
       });
