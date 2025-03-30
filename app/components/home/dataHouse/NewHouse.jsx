@@ -3,29 +3,50 @@
 import { HOUSE_DEFAULT } from "@/contants/image";
 import { PRODUCT_STATUS } from "@/contants/product";
 import useAuthState from "@/hooks/useAuthState";
-import { useGetHouseForMeQuery } from "@/service/rtk-query";
+import {
+  useGetHouseForMeQuery,
+  useGetNewHouseQuery,
+} from "@/service/rtk-query";
 import { formatMoney, getDistrict } from "@/utils/common.util";
 import { Grid } from "@mui/material";
 import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 function NewHouse() {
   const router = useRouter();
 
   const { user } = useAuthState();
 
-  const { data, isFetching } = useGetHouseForMeQuery({
-    userId: user?.id,
-    status: PRODUCT_STATUS.APPROVED,
-  });
+  const { data, isFetching } = useGetHouseForMeQuery(
+    {
+      userId: user?.id,
+      status: PRODUCT_STATUS.APPROVED,
+    },
+    {
+      skip: !user?.id,
+    }
+  );
+
+  const { data: dataNew } = useGetNewHouseQuery(
+    {},
+    {
+      skip: user?.id,
+    }
+  );
+
+  const dataHouse = useMemo(
+    () => data?.data || dataNew?.data || [],
+    [data, dataNew]
+  );
 
   const detailHouse = (id) => {
     router.push(`/detail_post/${id}`);
   };
   return (
     <div>
-      {data?.data?.map((e, index) => {
+      {dataHouse?.map((e, index) => {
         return (
           <Grid
             container

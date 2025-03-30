@@ -4,8 +4,11 @@ import RandomHouse from "./dataHouse/RandomHouse";
 import NewHouse from "./dataHouse/NewHouse";
 import HeaderProduct from "../base/HeaderProduct";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
+import useAuthState from "@/hooks/useAuthState";
 
 function DataHouse() {
+  const { user } = useAuthState();
+
   return (
     <Grid container spacing={4}>
       <Grid xs={8}>
@@ -16,8 +19,7 @@ function DataHouse() {
           <HeaderProduct
             color="#ffd2d2"
             icon={<FiberNewIcon color="error" sx={{ width: 40, height: 40 }} />}
-            // title="Tin Mới Nhất"
-            title="Bài Viết Của Tôi"
+            title={user?.id ? "Bài Viết Của Tôi" : "Tin Mới Nhất"}
           />
         </div>
         <NewHouse />
