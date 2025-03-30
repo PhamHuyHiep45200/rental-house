@@ -112,6 +112,15 @@ export const rtkQueryApi = createApi({
         data,
       }),
     }),
+
+    // get favorite
+    getFavorite: builder.query({
+      query: (params) => ({
+        url: "/favourite",
+        method: "GET",
+        params,
+      }),
+    }),
   }),
 });
 
@@ -128,4 +137,5 @@ export const {
   useUpdateHouseMutation,
   useGetMeQuery,
   useUpdateMeMutation,
+  useGetFavoriteQuery,
 } = rtkQueryApi;
