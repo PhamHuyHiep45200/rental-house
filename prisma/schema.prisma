@@ -63,7 +63,9 @@ model Favourite {
 model User {
   id         Int         @id @default(autoincrement())
   email      String      @unique
+  username   String?
   avatar     String?
+  address    String?
   password   String
   phone      String
   active     Boolean     @default(false)

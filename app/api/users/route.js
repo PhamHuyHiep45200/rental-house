@@ -6,14 +6,22 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const userId = searchParams.get("userId");
+    const userId = Number(searchParams.get("userId"));
+
     const page = searchParams.get("page");
-    if (userId) {
+    if (!isNaN(userId)) {
       const me = await prisma.user.findFirst({
         where: {
           id: userId,
         },
       });
+      if (!me) {
+        return NextResponse.json(
+          { error: "Không tìm thấy dữ liệu" },
+          { status: 404 }
+        );
+      }
+      delete me.password;
       return NextResponse.json(me);
     }
 
@@ -43,13 +51,18 @@ export async function GET(req) {
 export async function PATCH(req) {
   try {
     const data = await req.json();
-    const meUpdate = prisma.user.update({
+    const { userId, ...rest } = data;
+
+    console.log({ data });
+
+    const user = await prisma.user.update({
       where: {
         id: data?.userId,
       },
-      data,
+      data: rest,
     });
-    return NextResponse.json(meUpdate);
+    delete user.password;
+    return NextResponse.json(user);
   } catch (error) {
     console.log(error);
 

@@ -1,7 +1,14 @@
 "use client";
+import UploadSignImage from "@/app/components/common/UploadSignImage";
+import useAuthState from "@/hooks/useAuthState";
+import { uploadImages } from "@/service/frontend";
+import { useGetMeQuery, useUpdateMeMutation } from "@/service/rtk-query";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useUpdateMeMutation } from "@/store/service/user.service";
-import { setCheckChangeUser } from "@/store/slide/auth.slide";
+import {
+  initialStateUser,
+  setCheckChangeUser,
+  setUser,
+} from "@/store/slide/auth.slide";
 import { validationSchema } from "@/validation/info_user.validation";
 import {
   Button,
@@ -13,42 +20,98 @@ import {
   TextField,
 } from "@mui/material";
 import { Field, Formik } from "formik";
+import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
 function InfoMe() {
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.authSlice);
-  const [initialValues, setInitialValues] =
-    useState <
-    IUSer >
+  const { user } = useAuthState();
+
+  const {
+    data,
+    isSuccess: isGetMeSuccess,
+    isError: isGetMeError,
+  } = useGetMeQuery(
     {
-      username: "",
-      phone: "",
-    };
+      userId: user?.id,
+    },
+    {
+      skip: !user,
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
-  const [updateMe, { isSuccess, isError }] = useUpdateMeMutation();
+  const [initialValues, setInitialValues] = useState({
+    username: "",
+    phone: "",
+  });
+
+  const [updateMe] = useUpdateMeMutation();
+
+  const handleUpload = async (file) => {
+    try {
+      if (!file || typeof file === "string") return file;
+      // Tạo FormData để gửi lên API
+      const formData = new FormData();
+
+      formData.append("files", file);
+
+      // Gọi API upload
+      const response = await uploadImages(formData);
+
+      return response.files?.[0];
+    } catch (error) {
+      console.error("Upload error:", error);
+      return [];
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    const avatar = await handleUpload(values.avatar);
+
+    const res = await updateMe({
+      userId: data.id,
+      address: values.address,
+      avatar,
+      phone: values.phone,
+      username: values.username,
+    });
+    enqueueSnackbar("Thay Đổi Thành Công", {
+      variant: "success",
+    });
+
+    if (res.data) {
+      dispatch(
+        setUser({
+          ...user,
+          address: values.address,
+          avatar,
+          phone: values.phone,
+          username: values.username,
+        })
+      );
+      return;
+    }
+
+    enqueueSnackbar("Đã có lỗi xảy ra", {
+      variant: "error",
+    });
+  };
 
   useEffect(() => {
-    if (user) {
-      setInitialValues(user);
+    if (isGetMeSuccess) {
+      setInitialValues(data);
     }
-  }, [user]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      enqueueSnackbar("Thay Đổi Thành Công", {
-        variant: "success",
-      });
-      dispatch(setCheckChangeUser(Math.random()));
+    if (isGetMeError) {
+      dispatch(setUser(initialStateUser));
+      router.replace("/login");
     }
-    if (isError) {
-      enqueueSnackbar("Đã có lỗi xảy ra", {
-        variant: "error",
-      });
-    }
-  }, [isSuccess, isError]);
+  }, [data, isGetMeSuccess, isGetMeError]);
+
   return (
     <>
       <Container className="py-5 bg-white rounded-lg">
@@ -58,25 +121,18 @@ function InfoMe() {
           initialValues={initialValues}
           validationSchema={validationSchema}
           enableReinitialize
-          onSubmit={(values) => {
-            updateMe({
-              address: values.address,
-              avatar: values.avatar,
-              phone: values.phone,
-              username: values.username,
-            });
-          }}
+          onSubmit={handleSubmit}
         >
           {(props) => (
             <form onSubmit={props.handleSubmit}>
               <FormControl fullWidth>
-                {/* <Field
-                  as={UploadSignImage}
-                  name="avatar"
+                <UploadSignImage
+                  value={props.values.avatar}
                   onChange={(value) => {
                     props.setFieldValue("avatar", value);
+                    props.setFieldTouched("avatar", true);
                   }}
-                /> */}
+                />
                 <FormHelperText error sx={{ height: 30 }}>
                   {props.touched.avatar && props.errors.avatar}
                 </FormHelperText>
@@ -132,15 +188,15 @@ function InfoMe() {
                 <span>Quyền Hạn:</span>
                 <span
                   className="font-semibold"
-                  style={{ color: user?.role !== "USER" ? "red" : "blue" }}
+                  style={{ color: data?.role !== "USER" ? "red" : "blue" }}
                 >
-                  {user?.role !== "USER" ? "ADMIN" : "Người Dùng"}
+                  {data?.role !== "USER" ? "ADMIN" : "Người Dùng"}
                 </span>
               </div>
               <div className="flex items-center space-x-2 my-5">
                 <Chip
-                  label={user?.active ? "ĐANG HOẠT ĐỘNG" : "NGỪNG HOẠT ĐỘNG"}
-                  color={user?.active ? "success" : "error"}
+                  label={!data?.active ? "ĐANG HOẠT ĐỘNG" : "NGỪNG HOẠT ĐỘNG"}
+                  color={!data?.active ? "success" : "error"}
                   variant="outlined"
                 />
               </div>

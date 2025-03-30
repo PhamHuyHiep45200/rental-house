@@ -94,6 +94,24 @@ export const rtkQueryApi = createApi({
       }),
       invalidatesTags: ["Favorite"], // Khi xoá thì gọi lại danh sách yêu thích
     }),
+
+    //  get me
+    getMe: builder.query({
+      query: (params) => ({
+        url: "/users",
+        method: "GET",
+        params,
+      }),
+    }),
+
+    // update user
+    updateMe: builder.mutation({
+      query: (data) => ({
+        url: `/users`,
+        method: "PATCH",
+        data,
+      }),
+    }),
   }),
 });
 
@@ -108,4 +126,6 @@ export const {
   useAddFavoriteMutation,
   useDeleteFavoriteMutation,
   useUpdateHouseMutation,
+  useGetMeQuery,
+  useUpdateMeMutation,
 } = rtkQueryApi;
