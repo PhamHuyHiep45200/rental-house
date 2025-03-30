@@ -62,7 +62,7 @@ export async function DELETE(req) {
   try {
     const dataDelete = await prisma.category.update({
       where: {
-        id: body.categoryId,
+        id: body.id,
       },
       data: {
         active: body.active,

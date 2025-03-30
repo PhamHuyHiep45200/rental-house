@@ -1,12 +1,35 @@
 "use client";
+import useAuthState from "@/hooks/useAuthState";
 import { AreaChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { useRouter } from "next/navigation";
-import React from "react";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
 
 const { Sider, Content } = Layout;
+
 function LayoutMain({ children }) {
   const router = useRouter();
+  const { user } = useAuthState();
+  const pathName = usePathname();
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login"); // Chuyển hướng nếu không có user
+      return;
+    }
+    if (user?.role !== "ADMIN") {
+      router.replace("/");
+    }
+  }, [user]);
+
+  if (!user) {
+    return <div>Loading...</div>; // Hiển thị loading thay vì null
+  }
+
+  if (user?.role !== "ADMIN") {
+    return null;
+  }
+
   const changeMenu = (e) => {
     if (e.key === "/login") {
       logout();
@@ -14,17 +37,10 @@ function LayoutMain({ children }) {
       router.push(e.key);
     }
   };
+
   const itemsLayout = [
-    {
-      key: "/admin",
-      icon: <AreaChartOutlined />,
-      label: "Trang chủ",
-    },
-    {
-      key: "/admin/user",
-      icon: <UsergroupAddOutlined />,
-      label: "Người dùng",
-    },
+    { key: "/admin", icon: <AreaChartOutlined />, label: "Trang chủ" },
+    { key: "/admin/user", icon: <UsergroupAddOutlined />, label: "Người dùng" },
     {
       key: "/admin/category",
       icon: <UsergroupAddOutlined />,
@@ -35,29 +51,16 @@ function LayoutMain({ children }) {
       icon: <UsergroupAddOutlined />,
       label: "Quản Lý Bài Đăng",
     },
-    {
-      key: "/admin/login",
-      icon: <UsergroupAddOutlined />,
-      label: "Đăng Xuất",
-    },
+    { key: "/admin/login", icon: <UsergroupAddOutlined />, label: "Đăng Xuất" },
   ];
+
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
-        <div className="demo-logo-vertical" />
+      <Sider>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          selectedKeys={[pathName]}
           items={itemsLayout}
           onClick={changeMenu}
         />

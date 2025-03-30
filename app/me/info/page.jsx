@@ -3,12 +3,8 @@ import UploadSignImage from "@/app/components/common/UploadSignImage";
 import useAuthState from "@/hooks/useAuthState";
 import { uploadImages } from "@/service/frontend";
 import { useGetMeQuery, useUpdateMeMutation } from "@/service/rtk-query";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import {
-  initialStateUser,
-  setCheckChangeUser,
-  setUser,
-} from "@/store/slide/auth.slide";
+import { useAppDispatch } from "@/store/hooks";
+import { initialStateUser, setUser } from "@/store/slide/auth.slide";
 import { validationSchema } from "@/validation/info_user.validation";
 import {
   Button,
@@ -19,10 +15,10 @@ import {
   FormLabel,
   TextField,
 } from "@mui/material";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function InfoMe() {
   const { enqueueSnackbar } = useSnackbar();
@@ -111,6 +107,13 @@ function InfoMe() {
       router.replace("/login");
     }
   }, [data, isGetMeSuccess, isGetMeError]);
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login"); // Chuyển hướng nếu không có user
+      return;
+    }
+  }, [user]);
 
   return (
     <>
