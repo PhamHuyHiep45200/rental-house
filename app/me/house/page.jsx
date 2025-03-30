@@ -37,6 +37,7 @@ function House() {
   const { updateQueryStrings, updateQueryString } = useQueryString();
   const tab = searchParams.get("tab") || "1";
   const page = searchParams.get("page") || "1";
+
   const status = useMemo(() => {
     switch (tab) {
       case "0":
@@ -70,26 +71,26 @@ function House() {
     [[], { isSuccess: true, isError: false }];
 
   useEffect(() => {
-    if (isSuccessUpdate) {
-      refetch();
+    if (user && isSuccessUpdate) {
+      refetch?.();
     }
     if (isErrorUpdate) {
       enqueueSnackbar("Update Thất Bại", {
         variant: "error",
       });
     }
-  }, [isSuccessUpdate, isErrorUpdate]);
+  }, [isSuccessUpdate, isErrorUpdate, user]);
 
   useEffect(() => {
-    if (isSuccessDelete) {
-      refetch();
+    if (user && isSuccessDelete) {
+      refetch?.();
     }
     if (isErrorDelete) {
       enqueueSnackbar("Xoá Thất Bại", {
         variant: "error",
       });
     }
-  }, [isSuccessDelete, isErrorDelete]);
+  }, [isSuccessDelete, isErrorDelete, user]);
 
   const changeActive = (e, id) => {
     updateHouse({
@@ -124,6 +125,13 @@ function House() {
     setOpen(true);
     setIdAction(id);
   };
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login"); // Chuyển hướng nếu không có user
+      return;
+    }
+  }, [user]);
 
   return (
     <Container className="bg-white rounded-lg py-5">

@@ -14,6 +14,7 @@ import {
   useUpdateHouseMutation,
 } from "@/service/rtk-query";
 import { uploadImages } from "@/service/frontend";
+import useAuthState from "@/hooks/useAuthState";
 
 const initialValues = {
   categoryId: "",
@@ -35,6 +36,8 @@ function Update() {
   const params = useParams();
   const dispatch = useAppDispatch();
   const id = params.id;
+
+  const { user } = useAuthState();
 
   const {
     data: dataDetail,
@@ -116,6 +119,18 @@ function Update() {
       dispatch(stopLoading());
     }
   }, [isLoading]);
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login"); // Chuyển hướng nếu không có user
+      return;
+    }
+
+    if (dataDetail && dataDetail.userId !== user.id) {
+      router.replace("/"); // Chuyển hướng nếu không có user
+      return;
+    }
+  }, [user, dataDetail]);
 
   return (
     <Container className="bg-white py-5 rounded-lg">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteUser, getAllUser } from "@/service/admin/user";
+import { deleteUser, getAllUser, updateUser } from "@/service/admin/user";
 import AddUser from "./addUser";
 import { HighlightOutlined, LockOutlined } from "@ant-design/icons";
 import { Button, Pagination, Table, Tag } from "antd";
@@ -82,7 +82,7 @@ function Users() {
   const getAll = async () => {
     setLoading(true);
     try {
-      const { data } = await getAllUser({
+      const data = await getAllUser({
         page: pagination.page,
       });
       setData(data.data);
@@ -102,7 +102,7 @@ function Users() {
   };
   const handleDelete = async (id, active) => {
     try {
-      await deleteUser(id, active);
+      await updateUser(id, { active });
       getAll();
     } catch (error) {
       console.log(error);
@@ -114,6 +114,7 @@ function Users() {
       page,
     });
   };
+
   return (
     <div>
       <div className="text-center text-[30px] font-bold text-[#333]">
@@ -133,7 +134,7 @@ function Users() {
       />
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={data || []}
         pagination={false}
         loading={loading}
       />

@@ -26,6 +26,6 @@ export async function updateCategory(id, data) {
 export async function deleteCategory(id, active) {
   return request(`/category`, {
     method: "DELETE",
-    data: { categoryId: id, active },
+    data: { id, active },
   });
 }

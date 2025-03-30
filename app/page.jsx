@@ -1,23 +1,15 @@
 "use client";
-import { Container, Divider } from "@mui/material";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import React, { lazy } from "react";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import { Container, Divider } from "@mui/material";
 import HeaderProduct from "./components/base/HeaderProduct";
+import Banner from "./components/home/Banner";
 import DataHouse from "./components/home/DataHouse";
 import Search from "./components/home/Search";
 import Slide from "./components/home/Slide";
 import RandomPair from "./components/home/dataHouse/RandomPair";
-import { useAppSelector } from "@/store/hooks";
-import Banner from "./components/home/Banner";
 
 function Index() {
-  const { user, auth } = useAppSelector((state) => state.authSlice);
-
-  console.log("====================================");
-  console.log(user, auth);
-  console.log("====================================");
-
   return (
     <div className="">
       <Banner />

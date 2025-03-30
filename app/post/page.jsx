@@ -83,6 +83,13 @@ function Post() {
     }
   }, [isFetching]);
 
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login"); // Chuyển hướng nếu không có user
+      return;
+    }
+  }, [user]);
+
   return (
     <Container className="bg-white py-5 rounded-lg">
       <h1>Đăng Tin Mới</h1>

@@ -9,10 +9,10 @@ export async function GET(req) {
     const userId = Number(searchParams.get("userId"));
 
     const page = searchParams.get("page");
-    if (!isNaN(userId)) {
+    if (userId) {
       const me = await prisma.user.findFirst({
         where: {
-          id: userId,
+          id: Number(userId),
         },
       });
       if (!me) {
@@ -28,7 +28,6 @@ export async function GET(req) {
     const users = await prisma.user.findMany({
       where: {
         role: "USER",
-        active: false,
       },
       skip: skip(page),
       take: DEFAULT_PAGING.page_size,
@@ -52,8 +51,6 @@ export async function PATCH(req) {
   try {
     const data = await req.json();
     const { userId, ...rest } = data;
-
-    console.log({ data });
 
     const user = await prisma.user.update({
       where: {
