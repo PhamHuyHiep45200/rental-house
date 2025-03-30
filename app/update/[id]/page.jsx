@@ -13,6 +13,7 @@ import {
   useGetAllCategoryQuery,
   useUpdateHouseMutation,
 } from "@/service/rtk-query";
+import { uploadImages } from "@/service/frontend";
 
 const initialValues = {
   categoryId: "",
@@ -47,6 +48,41 @@ function Update() {
   const [updateHouse, { isLoading, isSuccess, isError }] =
     useUpdateHouseMutation();
   const { data, isSuccess: categorySuccess } = useGetAllCategoryQuery({});
+
+  const handleUpload = async (imgs) => {
+    try {
+      // Tạo FormData để gửi lên API
+      const formData = new FormData();
+      imgs.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      // Gọi API upload
+      const response = await uploadImages(formData);
+
+      return response.files;
+    } catch (error) {
+      console.error("Upload error:", error);
+      return [];
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    delete values.user;
+
+    const imgs = await handleUpload(
+      values.imgs.filter((img) => typeof img !== "string")
+    );
+
+    values.imgs = values.imgs
+      .filter((img) => typeof img === "string")
+      .concat(imgs);
+
+    updateHouse({
+      id,
+      data: values,
+    });
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -89,13 +125,7 @@ function Update() {
         initialValues={initialValue}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={(values) => {
-          delete values.user;
-          updateHouse({
-            id,
-            data: values,
-          });
-        }}
+        onSubmit={handleSubmit}
       >
         {(props) => (
           <FormPost props={props} categories={data?.data} type="update" />
