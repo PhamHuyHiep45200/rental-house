@@ -1,4 +1,4 @@
-import { newHouseApi } from "@/service/frontend";
+import { newHouseApi, randomHouseApi } from "@/service/frontend";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -12,8 +12,8 @@ function RandomHouse() {
   const getTopFavorite = async () => {
     setIsFetching(true);
     try {
-      const res = await newHouseApi();
-      setRandomHouse(res.data);
+      const res = await randomHouseApi();
+      setRandomHouse(res);
     } catch (error) {
     } finally {
       setIsFetching(false);
