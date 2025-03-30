@@ -1,4 +1,4 @@
-import { skip } from "@/config/api";
+import { getDataCommon, skip } from "@/config/api";
 import { DEFAULT_PAGING } from "@/contants/api";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
@@ -6,24 +6,42 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const page = searchParams.get("page");
-    const userId = searchParams.get("userId");
+    const page = Number(searchParams.get("page")) || 1; // Nếu không có page thì mặc định là 1
+    const userId = Number(searchParams.get("userId"));
+
+    if (!userId) {
+      return NextResponse.json({ error: "Thiếu userId" }, { status: 400 });
+    }
+
+    const skip = (page - 1) * DEFAULT_PAGING.page_size;
+
     const favourite = await prisma.favourite.findMany({
       where: {
-        userId,
-        active: true,
+        userId: userId,
       },
-      skip: skip(page),
+      include: {
+        house: true,
+      },
+      skip: skip,
       take: DEFAULT_PAGING.page_size,
     });
-    const total = await prisma.favourite.count();
 
-    return NextResponse.json(
-      getDataCommon(favourite, { total, skip: skip(page) })
-    );
+    const total = await prisma.favourite.count({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return NextResponse.json({
+      data: favourite.map((item) => item.house),
+      pagination: {
+        total,
+        page,
+        pageSize: DEFAULT_PAGING.page_size,
+      },
+    });
   } catch (error) {
     console.log(error);
-
     return NextResponse.json(
       { error: "Đã có lỗi từ Hệ Thống!" },
       { status: 500 }
