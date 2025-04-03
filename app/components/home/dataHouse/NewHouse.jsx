@@ -26,6 +26,7 @@ function NewHouse() {
     },
     {
       skip: !user?.id,
+      refetchOnMountOrArgChange: true,
     }
   );
 
@@ -33,6 +34,7 @@ function NewHouse() {
     {},
     {
       skip: user?.id,
+      refetchOnMountOrArgChange: true,
     }
   );
 

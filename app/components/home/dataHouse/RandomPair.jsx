@@ -8,9 +8,14 @@ import { useGetNewHouseQuery } from "@/service/rtk-query";
 import { HOUSE_TYPE } from "@/contants/house";
 
 function RandomPair() {
-  const { data, isFetching } = useGetNewHouseQuery({
-    type: HOUSE_TYPE.PAIR,
-  });
+  const { data, isFetching } = useGetNewHouseQuery(
+    {
+      type: HOUSE_TYPE.PAIR,
+    },
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   return (
     <div className="px-5 py-10">

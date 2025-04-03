@@ -29,7 +29,7 @@ function CardHome(props) {
         title={<span className="font-semibold">{house?.user?.username}</span>}
         subheader={<span>{moment(house?.updatedAt).fromNow()}</span>}
       />
-      <MaskImage sizeImage="width" src={house?.imgs?.[0] || HOUSE_DEFAULT} />
+      <MaskImage src={house?.imgs?.[0] || HOUSE_DEFAULT} />
       <div className="p-5 pt-2">
         <p className="font-semibold truncate-2 min-h-12 line-clamp-2">
           {house?.title}

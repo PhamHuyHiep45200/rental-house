@@ -24,6 +24,8 @@ export async function GET(req) {
 
     // Tạo điều kiện tìm kiếm
     const where = {
+      active: false,
+      deletedAt: null,
       status: PRODUCT_STATUS.APPROVED,
       ...(filters.category && { categoryId: Number(filters.category) }),
       ...(filters.province && { province: Number(filters.province) }),
