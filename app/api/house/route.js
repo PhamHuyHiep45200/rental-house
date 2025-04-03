@@ -50,6 +50,7 @@ export async function GET(req) {
       where: {
         status: status || "ACTIVE",
         active: active || false,
+        deletedAt: null,
         ...province_condition,
         ...district_condition,
         ...category_condition,
@@ -202,6 +203,29 @@ export async function PUT(req) {
 
     return NextResponse.json(
       { error: "Đã có lỗi từ Hệ Thống!" },
+      { status: 500 }
+    );
+  }
+}
+
+// soft delete house
+export async function DELETE(req) {
+  const body = await req.json();
+
+  try {
+    const dataDelete = await prisma.house.update({
+      where: {
+        id: body.id,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+    return NextResponse.json(dataDelete);
+  } catch (error) {
+    console.log("Chi tiết lỗi Prisma:", error);
+    return NextResponse.json(
+      { error: "Lỗi hệ thống!", detail: error.message },
       { status: 500 }
     );
   }

@@ -55,6 +55,16 @@ export const rtkQueryApi = createApi({
       invalidatesTags: (result, error, { id }) => [{ type: "House", id }], // Xoá cache của nhà khi cập nhật
     }),
 
+    // 🏡 Xoá nhà
+    deleteHouse: builder.mutation({
+      query: (data) => ({
+        url: `/house`,
+        method: "DELETE",
+        data,
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "House", id }], // Xoá cache của nhà khi xóa
+    }),
+
     // 🏠 Lấy danh sách nhà của user
     getHouseForMe: builder.query({
       query: (params) => ({
@@ -138,4 +148,5 @@ export const {
   useGetMeQuery,
   useUpdateMeMutation,
   useGetFavoriteQuery,
+  useDeleteHouseMutation,
 } = rtkQueryApi;

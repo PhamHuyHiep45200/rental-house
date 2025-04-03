@@ -2,7 +2,7 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Header from "./Header";
 import Footer from "./Footer";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import {
   setUser,
   setInfo,
@@ -74,7 +74,7 @@ export default function LayoutDefault({ children }) {
         <SnackbarProvider
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
-          {children}
+          <Suspense>{children}</Suspense>
         </SnackbarProvider>
       </main>
       <Divider />

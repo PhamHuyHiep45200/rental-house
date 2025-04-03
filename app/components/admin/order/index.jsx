@@ -1,16 +1,17 @@
-import { Button, Drawer, Image, Table } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
-import { cancelOrder, getAllOrder, updateOrder } from "@/service/order";
-import moment from "moment/moment";
-import { Tag } from "antd";
+"use client";
+
 import {
   KIND_PAYPAL,
-  STATUS_CANCEL,
   STATUS_ORDERED,
   StatusOrder,
   StatusTextOrder,
-} from "@/enum/order.enum";
+} from "@/contants/order";
+
+// import { cancelOrder, getAllOrder } from "@/service/order";
 import { formatMoney } from "@/utils/common.util";
+import { Button, Drawer, Image, Table, Tag } from "antd";
+import moment from "moment";
+import { useEffect, useMemo, useState } from "react";
 
 function Order() {
   const [loading, setLoading] = useState(false);
@@ -131,22 +132,22 @@ function Order() {
     getAll();
   }, []);
   const getAll = async () => {
-    setLoading(true);
-    try {
-      const { order } = await getAllOrder();
-      setLoading(false);
-      setData(order.data);
-    } catch (error) {
-      setLoading(false);
-    }
+    // setLoading(true);
+    // try {
+    //   const { order } = await getAllOrder();
+    //   setLoading(false);
+    //   setData(order.data);
+    // } catch (error) {
+    //   setLoading(false);
+    // }
   };
   const handleCancle = async (id) => {
-    try {
-      await cancelOrder(id);
-      getAll();
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await cancelOrder(id);
+    //   getAll();
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
   return (
     <div>

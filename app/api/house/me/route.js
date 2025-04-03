@@ -17,6 +17,7 @@ export async function GET(req) {
     const totalRecord = await prisma.house.count({
       where: {
         userId: Number(userId),
+        deletedAt: null,
       },
     });
 
@@ -25,6 +26,7 @@ export async function GET(req) {
     const data = await prisma.house.findMany({
       where: {
         userId: Number(userId),
+        deletedAt: null,
         status,
       },
       include: {

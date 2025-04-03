@@ -3,7 +3,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    const allHouses = await prisma.house.findMany();
+    const allHouses = await prisma.house.findMany({
+      where: {
+        deletedAt: null,
+        active: false,
+      },
+    });
     const shuffledHouses = allHouses.sort(() => 0.5 - Math.random());
     const results = shuffledHouses.slice(0, 10);
 

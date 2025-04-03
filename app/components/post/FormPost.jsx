@@ -1,23 +1,23 @@
-/* eslint-disable max-lines */
+"use client";
+
+import danangDistrict from "@/data/district/danang.json";
+import hanoiDistrict from "@/data/district/hanoi.json";
+import hcmDistrict from "@/data/district/hcm.json";
+import province from "@/data/province.json";
+import { Textarea } from "@mui/joy";
 import {
   Button,
   Divider,
   FormControl,
   FormHelperText,
   FormLabel,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
-import React, { useMemo } from "react";
-import { Textarea } from "@mui/joy";
-import province from "@/data/province.json";
-import hanoiDistrict from "@/data/district/hanoi.json";
-import danangDistrict from "@/data/district/danang.json";
-import hcmDistrict from "@/data/district/hcm.json";
 import { Field } from "formik";
+import { useMemo } from "react";
 import Description from "../base/Description";
 import UploadMultipleImage from "../common/UploadMultipleImage";
 
