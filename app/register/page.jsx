@@ -1,7 +1,14 @@
 "use client";
 import { registerUserApi } from "@/service/frontend";
 import { validationSchema } from "@/validation/register.validation";
-import { Button, Divider, FormControl, TextField } from "@mui/material";
+import { Textarea } from "@mui/joy";
+import {
+  Button,
+  Divider,
+  FormControl,
+  FormHelperText,
+  TextField,
+} from "@mui/material";
 import { Field, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,6 +20,7 @@ const initialValues = {
   password: "",
   email: "",
   username: "",
+  address: "",
 };
 function Register() {
   const router = useRouter();
@@ -83,6 +91,20 @@ function Register() {
                         helperText={props.touched.phone && props.errors.phone}
                         error={props.errors.phone && props.touched.phone}
                       ></Field>
+                    </FormControl>
+                    <FormControl fullWidth>
+                      <Field
+                        as={Textarea}
+                        minRows={4}
+                        placeholder="Địa Chỉ Cụ Thể ..."
+                        variant="soft"
+                        name="address"
+                        margin="dense"
+                        error={props.errors.address && props.touched.address}
+                      ></Field>
+                      <FormHelperText error sx={{ height: 30 }}>
+                        {props.touched.address && props.errors.address}
+                      </FormHelperText>
                     </FormControl>
                     <FormControl fullWidth className="mt-5">
                       <Field

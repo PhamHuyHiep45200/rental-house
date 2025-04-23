@@ -152,7 +152,7 @@ export default function Footer() {
             </h6>
             <p className="mb-4 flex items-center justify-center md:justify-start">
               <AccountCircleIcon className="mr-1" />
-              PHẠM HUY NGỌC
+              VŨ THANH TÙNG
             </p>
             <p className="mb-4 flex items-center justify-center md:justify-start">
               <svg
@@ -176,7 +176,7 @@ export default function Footer() {
                 <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
                 <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
               </svg>
-              phngoc176@gmail.com
+              vuthanhtung.fpt2019@gmail.com
             </p>
             <p className="mb-4 flex items-center justify-center md:justify-start">
               <svg
@@ -191,7 +191,7 @@ export default function Footer() {
                   clipRule="evenodd"
                 />
               </svg>
-              + 0965551706
+              + 0975344141
             </p>
             <p className="flex items-center justify-center md:justify-start">
               <svg
@@ -206,7 +206,7 @@ export default function Footer() {
                   clipRule="evenodd"
                 />
               </svg>
-              DCCTKH64A
+              DCCTHT65A
             </p>
           </div>
         </div>

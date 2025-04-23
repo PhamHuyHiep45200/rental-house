@@ -48,7 +48,7 @@ export async function GET(req) {
 
     const sortCondition = {
       where: {
-        status: status || "ACTIVE",
+        status: status || "ACCEPT",
         active: active || false,
         deletedAt: null,
         ...province_condition,

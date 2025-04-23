@@ -7,6 +7,7 @@ export async function GET(req) {
       where: {
         deletedAt: null,
         active: false,
+        status: "ACCEPT",
       },
     });
     const shuffledHouses = allHouses.sort(() => 0.5 - Math.random());
