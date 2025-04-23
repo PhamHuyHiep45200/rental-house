@@ -12,7 +12,7 @@ const initialValues = {
   phone: "",
   password: "",
   email: "",
-  avatar: "",
+  username: "",
 };
 function Register() {
   const router = useRouter();
@@ -52,12 +52,25 @@ function Register() {
                     <FormControl fullWidth>
                       <Field
                         as={TextField}
-                        label="Tên Người Dùng"
+                        label="Tên Đăng Nhập"
                         name="email"
                         variant="outlined"
                         margin="dense"
                         helperText={props.touched.email && props.errors.email}
                         error={props.errors.email && props.touched.email}
+                      ></Field>
+                    </FormControl>
+                    <FormControl fullWidth>
+                      <Field
+                        as={TextField}
+                        label="Tên Người Dùng"
+                        name="username"
+                        variant="outlined"
+                        margin="dense"
+                        helperText={
+                          props.touched.username && props.errors.username
+                        }
+                        error={props.errors.username && props.touched.username}
                       ></Field>
                     </FormControl>
                     <FormControl fullWidth>
