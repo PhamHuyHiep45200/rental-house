@@ -26,5 +26,17 @@ services:
     depends_on:
       - postgres
 
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my_nextjs_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+
 volumes:
   postgres_data:
