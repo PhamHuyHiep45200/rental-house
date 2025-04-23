@@ -17,23 +17,59 @@ import { Field } from "formik";
 import { useAppSelector } from "@/store/hooks";
 import Image from "next/image";
 import province from "@/data/province.json";
+import { useGetAllCategoryQuery } from "@/service/rtk-query";
 
 function SearchEnhanced(props) {
   const { open, setOpen, formValue } = props;
   const { infoAccout } = useAppSelector((state) => state.authSlice);
 
-  const { data, isSuccess } = { data: { data: { data: [] } }, isSuccess: true };
+  const { data, isSuccess } = useGetAllCategoryQuery({});
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const category = useMemo(() => {
-    if (isSuccess) {
-      return data.data.data;
-    }
-    return [];
-  }, [isSuccess]);
+  const category = useMemo(() => data?.data || [], [data]);
+
+  const prices = useMemo(
+    () => [
+      {
+        label: "0 - 2 triệu",
+        value: "0-2",
+      },
+      {
+        label: "2 - 5 triệu",
+        value: "2-5",
+      },
+      {
+        label: "5 - 10 triệu",
+        value: "5-10",
+      },
+      {
+        label: "10 triệu trở lên",
+        value: "10-up",
+      },
+    ],
+    []
+  );
+
+  const acreage = useMemo(
+    () => [
+      {
+        label: "0 - 30 m2",
+        value: "0-30",
+      },
+      {
+        label: "30 - 50 m2",
+        value: "30-50",
+      },
+      {
+        label: "Trên 50 m2",
+        value: "50-up",
+      },
+    ],
+    []
+  );
 
   const district = useMemo(() => {
     if (formValue.values.province) {
@@ -59,7 +95,7 @@ function SearchEnhanced(props) {
     >
       <div className="p-5 px-10">
         <DialogContentText component={"span"}>
-          <div className="font-bold">Chọn Giá:</div>
+          <div className="font-bold">Tìm kiếm nâng cao:</div>
           <div className="flex flex-1 justify-center my-3">
             <FormControl fullWidth={true}>
               <InputLabel id="demo-simple-select-standard-label">
@@ -120,6 +156,50 @@ function SearchEnhanced(props) {
                 {category.map((cate) => (
                   <MenuItem key={cate.id} value={cate.id}>
                     {cate.name}
+                  </MenuItem>
+                ))}
+              </Field>
+            </FormControl>
+          </div>
+          <div className="flex flex-1 justify-center my-3">
+            <FormControl fullWidth={true}>
+              <InputLabel id="demo-simple-select-standard-label">
+                Mức giá
+              </InputLabel>
+              <Field
+                as={Select}
+                id="demo-simple-select"
+                variant="standard"
+                labelId="demo-simple-select-standard-label"
+                name="money_range"
+                sx={{ width: 200 }}
+                defaultValue={""}
+              >
+                {prices.map((cate) => (
+                  <MenuItem key={cate.value} value={cate.value}>
+                    {cate.label}
+                  </MenuItem>
+                ))}
+              </Field>
+            </FormControl>
+          </div>
+          <div className="flex flex-1 justify-center my-3">
+            <FormControl fullWidth={true}>
+              <InputLabel id="demo-simple-select-standard-label">
+                Diện tích
+              </InputLabel>
+              <Field
+                as={Select}
+                id="demo-simple-select"
+                variant="standard"
+                labelId="demo-simple-select-standard-label"
+                name="square_range"
+                sx={{ width: 200 }}
+                defaultValue={""}
+              >
+                {acreage.map((cate) => (
+                  <MenuItem key={cate.value} value={cate.value}>
+                    {cate.label}
                   </MenuItem>
                 ))}
               </Field>

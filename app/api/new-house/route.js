@@ -22,6 +22,45 @@ export async function GET(req) {
     const square_to = filters.square_to ? Number(filters.square_to) : undefined;
     const district = filters.district ? Number(filters.district) : undefined;
 
+    // Handle predefined money range filters (in millions)
+    let moneyRangeCondition = {};
+    if (filters.money_range) {
+      switch (filters.money_range) {
+        case "0-2":
+          moneyRangeCondition = { gte: 0, lte: 2000000 };
+          break;
+        case "2-5":
+          moneyRangeCondition = { gte: 2000000, lte: 5000000 };
+          break;
+        case "5-10":
+          moneyRangeCondition = { gte: 5000000, lte: 10000000 };
+          break;
+        case "10-up":
+          moneyRangeCondition = { gte: 10000000 };
+          break;
+        default:
+          break;
+      }
+    }
+
+    // Handle predefined square range filters (in m2)
+    let squareRangeCondition = {};
+    if (filters.square_range) {
+      switch (filters.square_range) {
+        case "0-30":
+          squareRangeCondition = { gte: 0, lte: 30 };
+          break;
+        case "30-50":
+          squareRangeCondition = { gte: 30, lte: 50 };
+          break;
+        case "50-up":
+          squareRangeCondition = { gte: 50 };
+          break;
+        default:
+          break;
+      }
+    }
+
     // Tạo điều kiện tìm kiếm
     const where = {
       active: false,
@@ -39,19 +78,25 @@ export async function GET(req) {
           },
         ],
       }),
-      ...(money_from !== undefined || money_to !== undefined
+      ...(money_from !== undefined ||
+      money_to !== undefined ||
+      filters.money_range
         ? {
             money: {
               ...(money_from !== undefined ? { gte: money_from } : {}),
               ...(money_to !== undefined ? { lte: money_to } : {}),
+              ...(filters.money_range ? moneyRangeCondition : {}),
             },
           }
         : {}),
-      ...(square_from !== undefined || square_to !== undefined
+      ...(square_from !== undefined ||
+      square_to !== undefined ||
+      filters.square_range
         ? {
             square: {
               ...(square_from !== undefined ? { gte: square_from } : {}),
               ...(square_to !== undefined ? { lte: square_to } : {}),
+              ...(filters.square_range ? squareRangeCondition : {}),
             },
           }
         : {}),
