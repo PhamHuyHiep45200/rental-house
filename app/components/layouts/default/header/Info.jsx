@@ -4,7 +4,7 @@ import { setUser } from "@/store/slide/auth.slide";
 import { Avatar, List, ListItem, Popover } from "@mui/material";
 import PopupState, { bindPopover, bindTrigger } from "material-ui-popup-state";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useMemo } from "react";
 
 function Info() {
   const { user } = useAppSelector((state) => state.authSlice);
@@ -14,11 +14,25 @@ function Info() {
   const redirectPath = (path) => {
     if (path === "logout") {
       router.push("/login");
+      localStorage.removeItem("auth");
       dispatch(setUser(null));
     } else {
       router.push(path);
     }
   };
+
+  const CustomInfoList = useMemo(() => {
+    if (user.role === "ADMIN") {
+      return [
+        {
+          label: "Trang Quản Trị",
+          path: "/admin",
+        },
+        ...InfoList,
+      ];
+    }
+    return InfoList;
+  }, [user]);
 
   return (
     <PopupState variant="popover" popupId="popup-popover">
@@ -47,7 +61,7 @@ function Info() {
             }}
           >
             <List sx={{ width: 180, bgcolor: "background.paper", padding: 0 }}>
-              {InfoList.map((info) => (
+              {CustomInfoList.map((info) => (
                 <ListItem
                   key={info.path}
                   className="cursor-pointer font-semibold hover:bg-primary hover:bg-opacity-[0.3]"
