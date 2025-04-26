@@ -19,6 +19,9 @@ export async function GET(req) {
       where: {
         userId: userId,
       },
+      house: {
+          deletedAt: null, // Chỉ lấy house chưa bị xóa
+        },
       include: {
         house: true,
       },
@@ -30,6 +33,9 @@ export async function GET(req) {
       where: {
         userId: userId,
       },
+      house: {
+          deletedAt: null, // Chỉ lấy house chưa bị xóa
+        },
     });
 
     return NextResponse.json({
