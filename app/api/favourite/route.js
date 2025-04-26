@@ -18,10 +18,10 @@ export async function GET(req) {
     const favourite = await prisma.favourite.findMany({
       where: {
         userId: userId,
-      },
-      house: {
+        house: {
           deletedAt: null, // Chỉ lấy house chưa bị xóa
         },
+      },
       include: {
         house: true,
       },
@@ -32,10 +32,10 @@ export async function GET(req) {
     const total = await prisma.favourite.count({
       where: {
         userId: userId,
-      },
-      house: {
+        house: {
           deletedAt: null, // Chỉ lấy house chưa bị xóa
         },
+      },
     });
 
     return NextResponse.json({
