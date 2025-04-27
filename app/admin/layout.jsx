@@ -1,6 +1,7 @@
 "use client";
 import useAuthState from "@/hooks/useAuthState";
 import { useAppDispatch } from "@/store/hooks";
+import { setUser } from "@/store/slide/auth.slide";
 import { AreaChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { usePathname, useRouter } from "next/navigation";
@@ -33,9 +34,8 @@ function LayoutMain({ children }) {
   }
 
   const changeMenu = (e) => {
-    console.log(e);
+    console.log('heheheh', e.key);
     if (e.key === "/login") {
-      router.push("/login");
       localStorage.removeItem("auth");
       dispatch(setUser(null));
     } else {
@@ -56,7 +56,7 @@ function LayoutMain({ children }) {
       icon: <UsergroupAddOutlined />,
       label: "Quản Lý Bài Đăng",
     },
-    { key: "/admin/login", icon: <UsergroupAddOutlined />, label: "Đăng Xuất" },
+    { key: "/login", icon: <UsergroupAddOutlined />, label: "Đăng Xuất" },
   ];
 
   return (
