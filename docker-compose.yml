@@ -37,6 +37,14 @@ services:
       - postgres
     env_file:
       - .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+      - ./public/uploads:/app/public/uploads
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
 
 volumes:
   postgres_data:
