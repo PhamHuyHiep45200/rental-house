@@ -1,5 +1,6 @@
 "use client";
 import useAuthState from "@/hooks/useAuthState";
+import { useAppDispatch } from "@/store/hooks";
 import { AreaChartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { usePathname, useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ function LayoutMain({ children }) {
   const router = useRouter();
   const { user } = useAuthState();
   const pathName = usePathname();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!user) {
@@ -31,8 +33,11 @@ function LayoutMain({ children }) {
   }
 
   const changeMenu = (e) => {
+    console.log(e);
     if (e.key === "/login") {
-      logout();
+      router.push("/login");
+      localStorage.removeItem("auth");
+      dispatch(setUser(null));
     } else {
       router.push(e.key);
     }
