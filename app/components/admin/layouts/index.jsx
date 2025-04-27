@@ -1,4 +1,6 @@
 import { CreateContext } from "@/context/ContextProviderGlobal";
+import { useAppDispatch } from "@/store/hooks";
+import { setUser } from "@/store/slide/auth.slide";
 import {
   AreaChartOutlined,
   BellOutlined,
@@ -13,9 +15,12 @@ const { Sider, Content } = Layout;
 function LayoutMain({ children }) {
   const { noti, user, logout } = useContext(CreateContext);
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const changeMenu = (e) => {
     if(e.key === '/login') {
-      logout()
+      router.push("/login");
+      localStorage.removeItem("auth");
+      dispatch(setUser(null));
     } else {
       router.push(e.key);
     }
