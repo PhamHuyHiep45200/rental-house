@@ -6,6 +6,7 @@ import { formatMoney } from "@/utils/common.util";
 import { Button, Image, Pagination, Table } from "antd";
 import { PRODUCT_STATUS } from "@/contants/product";
 import { HOUSE_DEFAULT } from "@/contants/image";
+import { getImage } from "@/service/frontend";
 
 function ProductPending({ checkCall, resetData }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -73,7 +74,7 @@ function ProductPending({ checkCall, resetData }) {
       render: (imgs, record) => (
         <div className="flex items-center space-x-4">
           <Image
-            src={imgs[0] || HOUSE_DEFAULT}
+            src={getImage(imgs[0]) || HOUSE_DEFAULT}
             alt=""
             className="max-w-[100px] min-w-[100px] min-h-[100px] max-h-[100px] rounded-[6px]"
           />

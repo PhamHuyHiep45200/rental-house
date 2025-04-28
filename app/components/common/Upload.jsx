@@ -1,3 +1,4 @@
+import { getImage } from "@/service/frontend";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -21,7 +22,9 @@ function Upload({ value, onChange }) {
         return (
           <div>
             <button onClick={open}>Upload an Image</button>
-            {image && <Image src={image} alt="" width={100} height={130} />}
+            {image && (
+              <Image src={getImage(image)} alt="" width={100} height={130} />
+            )}
           </div>
         );
       }}

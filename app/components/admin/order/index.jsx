@@ -6,6 +6,7 @@ import {
   StatusOrder,
   StatusTextOrder,
 } from "@/contants/order";
+import { getImage } from "@/service/frontend";
 
 // import { cancelOrder, getAllOrder } from "@/service/order";
 import { formatMoney } from "@/utils/common.util";
@@ -101,7 +102,7 @@ function Order() {
           <div className="flex items-center space-x-4">
             <Image
               className="min-w-[60px] min-h-[40px] max-w-[60px] max-h-[40px] md:min-w-[80px] md:min-h-[80px] md:max-w-[80px] md:max-h-[80px]"
-              src={JSON.parse(record?.product?.image)?.[0] ?? ""}
+              src={getImage(JSON.parse(record?.product?.image)?.[0] ?? "")}
               alt=""
             />
             <span className="truncate-2">{record?.product?.name}</span>

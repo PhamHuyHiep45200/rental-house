@@ -1,4 +1,5 @@
 import { InfoList } from "@/config/header.config";
+import { getImage } from "@/service/frontend";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setUser } from "@/store/slide/auth.slide";
 import { Avatar, List, ListItem, Popover } from "@mui/material";
@@ -45,7 +46,7 @@ function Info() {
             <Avatar
               sx={{ height: 40, width: 40 }}
               alt={user?.username?.[0]}
-              src={user?.avatar ?? ""}
+              src={getImage(user?.avatar) ?? ""}
             />
             <span>{user?.username}</span>
           </div>
