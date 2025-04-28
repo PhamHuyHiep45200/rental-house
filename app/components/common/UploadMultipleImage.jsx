@@ -3,6 +3,7 @@ import { Box, Button, IconButton, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getImage } from "@/service/frontend";
 
 // Styled component cho input file ẩn
 const VisuallyHiddenInput = styled("input")({
@@ -23,7 +24,7 @@ const UploadMultipleImage = ({ value, onChange }) => {
             return { file: item, url: URL.createObjectURL(item) };
           } else if (typeof item === "string") {
             // Nếu là URL (từ API)
-            return { file: null, url: item };
+            return { file: null, url: getImage(item) };
           }
           return null;
         })

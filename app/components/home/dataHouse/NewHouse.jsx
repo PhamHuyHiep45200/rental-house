@@ -3,6 +3,7 @@
 import { HOUSE_DEFAULT } from "@/contants/image";
 import { PRODUCT_STATUS } from "@/contants/product";
 import useAuthState from "@/hooks/useAuthState";
+import { getImage } from "@/service/frontend";
 import {
   useGetHouseForMeQuery,
   useGetNewHouseQuery,
@@ -59,7 +60,7 @@ function NewHouse() {
           >
             <Grid xs={4}>
               <Image
-                src={e?.imgs?.[0] || HOUSE_DEFAULT}
+                src={getImage(e?.imgs?.[0]) || HOUSE_DEFAULT}
                 width={110}
                 height={110}
                 alt="img"

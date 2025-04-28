@@ -3,6 +3,7 @@ import { Box, Button, IconButton, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { getImage } from "@/service/frontend";
 
 const VisuallyHiddenInput = styled("input")({
   display: "none",
@@ -16,7 +17,7 @@ const UploadSignImage = ({ value, onChange }) => {
       if (value instanceof File) {
         setPreview({ file: value, url: URL.createObjectURL(value) });
       } else if (typeof value === "string") {
-        setPreview({ file: null, url: value });
+        setPreview({ file: null, url: getImage(value) });
       }
     } else {
       setPreview(null);

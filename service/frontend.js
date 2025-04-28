@@ -83,3 +83,7 @@ export async function createPost(data) {
     data,
   });
 }
+
+export function getImage(url) {
+  return `/api/images/${String(url).split("/").pop()}`;
+}
